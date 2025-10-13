@@ -1,0 +1,24 @@
+@startuml personnage_creation
+autonumber
+actor "Joueur" as P
+participant ":Système" as S
+actor "MJ" as M
+
+P -> S: demandeCréationPersonnage()
+S --> P: afficheFormulairePersonnage()
+P -> S: soumetDonnéesPersonnage(nom, univers, etc.)
+S --> P: confirmeCréation(idPersonnage)
+
+P -> S: demandePropositionPersonnage(idPersonnage, MJ)
+S --> P: confirmePropositionEnvoyée()
+
+... Plus tard ...
+
+M -> S: seConnecte()
+S --> M: afficheTableauDeBord()
+note right of S: Le système inclut une notification\npour la proposition en attente.
+M -> S: consulteProposition(idPersonnage)
+S --> M: afficheDétailsPersonnage(incluant bio privée)
+M -> S: accepteProposition(idPersonnage)
+S --> M: confirmeAcceptation()
+@enduml

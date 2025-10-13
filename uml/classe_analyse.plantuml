@@ -1,0 +1,70 @@
+@startuml classe_analyse
+
+class Utilisateur {
+  - nom: String
+  - email: String
+}
+
+class Personnage {
+  - nom: String
+  - dateDeNaissance: String
+  - profession: String
+  - portrait: Image
+}
+
+class Biographie {
+  - biographieInitiale: String
+}
+
+class Episode {
+  - titre: String
+  - dateEvenement: String
+  - statut: StatutEpisode
+}
+
+enum StatutEpisode {
+  BROUILLON
+  DEFINITIF
+}
+
+class Paragraphe {
+  - texte: String
+  - estSecret: Boolean
+}
+
+class Partie {
+  - titre: String
+  - resume: String
+  - informationsPratiques: String
+  - statut: StatutPartie
+}
+
+enum StatutPartie {
+  PROPOSITION
+  TERMINEE
+  ANNULEE
+}
+
+class Univers {
+ - nom: String
+ - description: String
+}
+
+
+
+Utilisateur "1" -- "0..*" Personnage : "possède"
+Utilisateur "1" -- "0..*" Personnage : "est le MJ de"
+Personnage "1" -- "1" Biographie : "a"
+Biographie "1" -- "0..*" Episode : "contient"
+Episode "1" -- "1..*" Paragraphe : "contient"
+
+Personnage "*" -- "1" Univers : "appartient à"
+Partie "1" -- "0..*" Univers : "se déroule dans"
+
+Partie "0..*" -- "1" Utilisateur : "est menée par (MJ)"
+Partie "1" -- "0..*" Personnage : "implique"
+
+Episode "0..*" -- "0..1" Partie : "relate (Aventure)"
+
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml use_case
+left to right direction
+
+
+rectangle "Système de Gestion de Parties de Rôle" {
+  rectangle "Gestion des Personnages" {
+    usecase "Créer un personnage" as UC1
+    usecase "Accepter un personnage" as UC2
+    usecase "Consulter une biographie" as UC3
+    usecase "Gérer sa biographie" as UC4
+    usecase "Transférer un personnage" as UC5
+    usecase "Demander un changement de MJ" as UC6
+    usecase "Accepter la prise en charge" as UC7
+
+    UC3 ..> (Ajouter un épisode) : <<include>>
+    UC3 ..> (Modifier/Valider un épisode) : <<include>>
+    UC3 ..> (Révéler un paragraphe secret) : <<include>>
+  }
+
+  rectangle "Gestion des Parties" {
+    usecase "Proposer une partie" as UC8
+    usecase "Gérer les participants" as UC9
+    usecase "Finaliser une partie" as UC10
+    usecase "Consulter les parties" as UC11
+    usecase "Supprimer une proposition de partie" as UC12
+  }
+}
+
+user -- UC1
+user -- UC2
+user -- UC3
+user -- UC4
+user -- UC5
+user -- UC6
+user -- UC7
+user -- UC8
+user -- UC9
+user -- UC10
+user -- UC11
+user -- UC12
+@enduml

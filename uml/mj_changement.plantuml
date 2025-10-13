@@ -1,0 +1,21 @@
+@startuml mj_changement
+autonumber
+actor "Joueur" as P
+participant ":Système" as S
+actor "Nouveau MJ" as NMJ
+
+P -> S: demandeChangementMJ(idPersonnage)
+S --> P: afficheListeUtilisateurs()
+P -> S: selectionneNouveauMJ(idNouveauMJ)
+S --> P: confirmeDemandeEnvoyée()
+S -> NMJ: notifieDemandePriseEnCharge(idPersonnage)
+
+... Plus tard ...
+
+NMJ -> S: consulteDemandePriseEnCharge(idPersonnage)
+S --> NMJ: afficheDétailsPersonnage(incluant bio privée)
+NMJ -> S: acceptePriseEnCharge(idPersonnage)
+S -> S: metAJourMJ(idPersonnage, idNouveauMJ)
+S --> NMJ: confirmePriseEnCharge()
+S -> P: notifieChangementMJ(idPersonnage)
+@enduml

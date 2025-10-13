@@ -1,0 +1,25 @@
+@startuml episode
+autonumber
+actor "Joueur" as P
+participant ":Système" as S
+actor "MJ" as M
+
+P -> S: ajouteEpisodeBrouillon(idPersonnage, contenu)
+S --> P: confirmeSauvegardeBrouillon(idEpisode)
+note right of P: Le joueur rédige et sauvegarde\nun brouillon.
+
+... Plus tard ...
+
+P -> S: demandeValidationEpisode(idEpisode)
+S --> P: confirmeDemandeEnvoyée()
+S -> M: notifieDemandeValidation(idEpisode, idPersonnage)
+
+... Plus tard ...
+
+M -> S: consulteEpisodeEnAttente(idEpisode)
+S --> M: afficheEpisode(contenu, paragraphesSecrets)
+M -> S: accepteValidationEpisode(idEpisode)
+S -> S: metAJourStatutEpisode("Définitif")
+S --> M: confirmeValidation()
+S -> P: notifieEpisodeValidé(idEpisode)
+@enduml

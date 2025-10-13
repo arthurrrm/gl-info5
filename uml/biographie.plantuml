@@ -1,0 +1,42 @@
+@startuml biographie
+autonumber
+actor "Utilisateur" as U
+participant ":Système" as S
+
+U -> S: consulteBiographie(idPersonnage)
+S -> S: vérifieDroitsUtilisateur(idUtilisateur, idPersonnage)
+
+alt l'Utilisateur est le propriétaire OU le MJ du personnage
+
+    note right of S
+        L'utilisateur a les droits pour voir
+        la version privée de la biographie.
+    end note
+
+    S -> S: récupèreBiographieComplète(idPersonnage)
+    note right of S
+        Inclut les épisodes en brouillon
+        et tous les paragraphes (publics et secrets).
+    end note
+    S --> U: afficheBiographiePrivée(donnéesComplètes)
+    note left of U
+        L'affichage indique clairement
+        quels paragraphes sont secrets
+        et quels épisodes sont des brouillons.
+    end note
+
+else autre cas
+
+    note right of S
+        L'utilisateur n'a accès
+        qu'à la version publique.
+    end note
+    S -> S: récupèreBiographiePublique(idPersonnage)
+    note right of S
+        Ne récupère que les épisodes validés
+        et filtre les paragraphes secrets.
+    end note
+    S --> U: afficheBiographiePublique(donnéesPubliques)
+
+end
+@enduml
