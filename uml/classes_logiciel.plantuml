@@ -1,0 +1,185 @@
+@startuml classes_logiciel
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+' ==========================================
+'           PAQUETAGE MODELE
+' ==========================================
+package "Modele" <<Rectangle>> {
+  
+  ' --- Façade pour le Modèle ---
+  class FacadeModele {
+    - gestionnairePersonnages: GestionnairePersonnages
+    - gestionnaireParties: GestionnaireParties
+    + creerPersonnage(nom, univers, ...): Personnage
+    + proposerPartie(titre, univers, ...): Partie
+    + getPersonnagesUtilisateur(user: Utilisateur): List<Personnage>
+    + getPartiesDisponibles(): List<Partie>
+    ' ... autres méthodes de haut niveau
+  }
+
+  ' --- Classes de Service / Gestionnaires ---
+  class GestionnairePersonnages {
+    - personnages: List<Personnage>
+    + creerPersonnage(...): Personnage
+    + validerEpisode(episode: Episode, user: Utilisateur)
+    + changerMJ(perso: Personnage, nouveauMJ: Utilisateur)
+  }
+
+  class GestionnaireParties {
+    - parties: List<Partie>
+    + creerPartie(...): Partie
+    + ajouterParticipant(partie: Partie, perso: Personnage)
+    + finaliserPartie(partie: Partie, resume: String)
+  }
+
+  ' --- Classes du Domaine (Entités) ---
+  class Personnage {
+    - nom: String
+    - dateNaissance: Date
+    - profession: String
+    - univers: Univers
+    - biographie: Biographie
+    + ajouterEpisode(episode: Episode)
+    + revelerSecret(paragraphe: Paragraphe)
+  }
+
+  class Partie {
+    - titre: String
+    - univers: Univers
+    - participants: List<Personnage>
+    - statut: StatutPartie
+    + ajouterParticipant(perso: Personnage)
+    + finaliser(resume: String)
+  }
+  
+  class Biographie {
+    - episodes: List<Episode>
+    + getEpisodesChronologiques(): List<Episode>
+  }
+  
+  class Episode {
+    - contenu: List<Paragraphe>
+    - statut: StatutEpisode
+  }
+  
+  class Paragraphe {
+    - texte: String
+    - estSecret: boolean
+  }
+  
+  class Utilisateur {
+    - nom: String
+  }
+  
+  class Univers {
+    - nom: String
+  }
+  
+  enum StatutPartie
+  enum StatutEpisode
+}
+
+' ==========================================
+'           PAQUETAGE VUE
+' ==========================================
+package "Vue" <<Rectangle>> {
+  
+  interface IVue {
+    + afficher()
+    + fermer()
+  }
+
+  abstract class VueAbstraite implements IVue {
+    # mainFrame: JFrame
+    + afficher()
+  }
+
+  class VueTableauDeBord extends VueAbstraite {
+    - btnCreerPerso: JButton
+    - btnProposerPartie: JButton
+    - listePersonnages: JList
+    + setControleur(c: AppControleur)
+  }
+
+  class VueCreationPersonnage extends VueAbstraite {
+    - champNom: JTextField
+    - btnValider: JButton
+    + getDonneesFormulaire(): Map<String, String>
+    + setControleur(c: PersonnageControleur)
+  }
+  
+  class VueConsultationBiographie extends VueAbstraite {
+    - zoneTexteBio: JTextArea
+    + afficherBiographie(p: Personnage, estPrivee: boolean)
+  }
+  
+  ' ... Autres vues spécifiques
+}
+
+' ==========================================
+'           PAQUETAGE CONTROLEUR
+' ==========================================
+package "Controleur" <<Rectangle>> {
+  
+  class AppControleur {
+    - modele: FacadeModele
+    - personnageCtrl: PersonnageControleur
+    - partieCtrl: PartieControleur
+    - vueCourante: IVue
+    + demarrerApplication()
+    + afficherTableauDeBord()
+    + afficherCreationPersonnage()
+  }
+  
+  class PersonnageControleur {
+    - modele: FacadeModele
+    + traiterCreationPersonnage(donnees: Map<String, String>)
+    + traiterDemandeChangementMJ(perso: Personnage, nouveauMJ: Utilisateur)
+  }
+
+  class PartieControleur {
+    - modele: FacadeModele
+    + traiterPropositionPartie(donnees: Map<String, String>)
+  }
+}
+
+' ==========================================
+'           RELATIONS INTER-PAQUETAGES
+' ==========================================
+Controleur ..> Vue : "Met à jour / Sélectionne"
+Controleur ..> Modele : "Invoque / Modifie"
+Vue ..> Modele : "Observe / Lit"
+
+
+' ==========================================
+'           RELATIONS INTERNES
+' ==========================================
+' --- Controleur ---
+AppControleur *-- PersonnageControleur
+AppControleur *-- PartieControleur
+PersonnageControleur --> FacadeModele
+PartieControleur --> FacadeModele
+
+' --- Vue ---
+VueTableauDeBord ..> AppControleur : "Notifie actions"
+VueCreationPersonnage ..> PersonnageControleur : "Notifie actions"
+
+
+' --- Modele ---
+FacadeModele *-- GestionnairePersonnages
+FacadeModele *-- GestionnaireParties
+GestionnairePersonnages ..> Personnage
+GestionnaireParties ..> Partie
+
+Personnage "1" *-- "1" Biographie
+Biographie "1" *-- "0..*" Episode
+Episode "1" *-- "1..*" Paragraphe
+
+Partie "1" -- "0..*" Personnage : "participants"
+Utilisateur "1 (MJ)" -- "0..*" Partie
+Utilisateur "1 (Propriétaire)" -- "0..*" Personnage
+Personnage "1" -- "1" Utilisateur : "MJ attitré"
+
+@enduml
