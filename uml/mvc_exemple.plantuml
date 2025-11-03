@@ -1,0 +1,30 @@
+@startuml mvc_exemple
+autonumber
+actor "Utilisateur (MJ)" as user
+
+participant "VueListeParties" as view_list
+participant "PartieControleur" as controller
+participant "Modèle" as model
+participant "VueCreationPartie" as view_create
+
+user -> view_list: Clique sur "Proposer une nouvelle partie"
+view_list -> controller: demandeAffichageFormulairePartie()
+
+controller -> view_create: afficheToi()
+view_create --> user: Affiche le formulaire de création de partie
+
+user -> view_create: Remplit les informations (titre, univers, etc.)\net clique sur "Valider"
+view_create -> controller: creerNouvellePartie(donnéesFormulaire)
+
+controller -> model: creerPartie(données)
+note right of controller
+  Le contrôleur demande au modèle
+  de créer une nouvelle instance de Partie.
+end note
+model -> model: Valide les données et crée l'objet Partie
+model --> controller: confirmeCreation(idNouvellePartie)
+model --> view_list: InformeMiseAJour()
+view_list -> model: getListeParties()
+model --> view_list: renvoie la liste à jour
+view_list --> user: Affiche la liste des parties, incluant la nouvelle proposition.
+@enduml

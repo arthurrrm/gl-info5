@@ -4,7 +4,7 @@ left to right direction
 
 rectangle "Système de Gestion de Parties de Rôle" {
   rectangle "Gestion des Personnages" {
-    usecase "Créer un personnage" as UC1
+    usecase "Demande de création d'un personnage" as UC1
     usecase "Accepter un personnage" as UC2
     usecase "Consulter une biographie" as UC3
     usecase "Gérer sa biographie" as UC4
