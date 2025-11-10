@@ -10,19 +10,26 @@ public class FacadeModele {
 	private final GestionnairePersonnages gestionnairePersonnages;
 	private final GestionnaireParties gestionnaireParties;
 	private final UniversManager universManager;
+	private final UtilisateurManager utilisateurManager;
 
 	public FacadeModele() {
 		this.gestionnairePersonnages = new GestionnairePersonnages();
 		this.gestionnaireParties = new GestionnaireParties();
 		this.universManager = new UniversManager();
+		this.utilisateurManager = new UtilisateurManager();
 	}
 
 	public Personnage creerPersonnage(String nom, Univers univers) {
 		return gestionnairePersonnages.creerPersonnage(nom, univers);
 	}
 
-	public Partie proposerPartie(String titre, Univers univers) {
-		return gestionnaireParties.creerPartie(titre, univers);
+	public Partie proposerPartie(String titre, Univers univers, Utilisateur maitreJeu) {
+		return gestionnaireParties.creerPartie(titre, univers, maitreJeu);
+	}
+
+	public Utilisateur connecterUtilisateur(String nomUtilisateur) {
+
+		return utilisateurManager.connecterUtilisateur(nomUtilisateur);
 	}
 
 	public Univers getUnivers(String nom) {

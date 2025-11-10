@@ -17,7 +17,6 @@ public class VueCreationPartie extends VueAbstraite {
 	private JButton btnAnnuler = new JButton("Annuler");
 	private JTextField champNomPartie = new JTextField(20);
 	private JTextField champUnivers = new JTextField(20);
-	private PartieControleur partieControleur;
 	private AppControleur appControleur;
 
 	public VueCreationPartie() {
@@ -39,7 +38,7 @@ public class VueCreationPartie extends VueAbstraite {
 			// Récupérer les données et appeler le contrôleur de partie
 			String nomPartie = champNomPartie.getText();
 			String univers = champUnivers.getText();
-			partieControleur.traiterPropositionPartie(Map.of(
+			appControleur.creerPartieDepuisDonnees(Map.of(
 					"titre", nomPartie,
 					"univers", univers));
 			appControleur.afficherTableauDeBord();
@@ -48,10 +47,6 @@ public class VueCreationPartie extends VueAbstraite {
 		btnAnnuler.addActionListener(e -> appControleur.afficherTableauDeBord());
 
 		setContentPane(panel);
-	}
-
-	public void setPartieControleur(PartieControleur partieCtrl) {
-		this.partieControleur = partieCtrl;
 	}
 
 	public void setAppControleur(AppControleur appCtrl) {

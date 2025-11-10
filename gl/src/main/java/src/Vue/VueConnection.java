@@ -26,7 +26,7 @@ public class VueConnection extends VueAbstraite {
 		panel.add(btnConnecter);
 		btnConnecter.addActionListener(e -> {
 			String nomUtilisateur = champNomUtilisateur.getText();
-			// appControleur.seConnecter(nomUtilisateur);
+			appControleur.seConnecter(nomUtilisateur);
 		});
 		setContentPane(panel);
 	}

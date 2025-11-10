@@ -15,11 +15,11 @@ public class PartieControleur {
 		this.modele = modele;
 	}
 
-	public void traiterPropositionPartie(Map<String, String> donnees) {
+	public void traiterPropositionPartie(Map<String, String> donnees, src.Model.Utilisateur utilisateurConnecte) {
 		// Extraction minimale (titre, univers...) - squelette
 		String titre = donnees.get("titre");
 		String universNom = donnees.get("univers");
 		Univers univers = modele.getUnivers(universNom);
-		modele.proposerPartie(titre, univers); // Univers null pour l'instant (squelette)
+		modele.proposerPartie(titre, univers, utilisateurConnecte);
 	}
 }

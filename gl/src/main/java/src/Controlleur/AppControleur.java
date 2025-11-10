@@ -1,6 +1,7 @@
 package src.Controlleur;
 
 import src.Model.FacadeModele;
+import src.Model.Utilisateur;
 import src.Vue.IVue;
 import src.Vue.VueCreationPartie;
 import src.Vue.VueTableauDeBord;
@@ -17,6 +18,7 @@ public class AppControleur {
 	private final PersonnageControleur personnageCtrl;
 	private final PartieControleur partieCtrl;
 	private IVue vueCourante;
+	Utilisateur utilisateurConnecte;
 
 	public AppControleur(FacadeModele modele) {
 		this.modele = modele;
@@ -42,9 +44,12 @@ public class AppControleur {
 
 	public void afficherPropositionPartie() {
 		VueCreationPartie vue = new VueCreationPartie();
-		vue.setPartieControleur(partieCtrl);
 		vue.setAppControleur(this);
 		changerVue(vue);
+	}
+
+	public void seConnecter(String nomUtilisateur) {
+		utilisateurConnecte = modele.connecterUtilisateur(nomUtilisateur);
 	}
 
 	private void changerVue(IVue nouvelle) {
@@ -58,5 +63,9 @@ public class AppControleur {
 	// Facilite le passage de données issues des vues si nécessaire
 	public void creerPersonnageDepuisDonnees(Map<String, String> donnees) {
 		personnageCtrl.traiterCreationPersonnage(donnees);
+	}
+
+	public void creerPartieDepuisDonnees(Map<String, String> donnees) {
+		partieCtrl.traiterPropositionPartie(donnees, utilisateurConnecte);
 	}
 }
