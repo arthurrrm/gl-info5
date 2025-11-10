@@ -1,11 +1,15 @@
 package src;
 
+import src.Controlleur.AppControleur;
+import src.Model.FacadeModele;
+
 /**
- * Hello world!
- *
+ * Point d'entrée minimal pour initialiser le modèle et le contrôleur principal.
  */
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!!");
+        FacadeModele modele = new FacadeModele();
+        AppControleur appControleur = new AppControleur(modele);
+        appControleur.demarrerApplication();
     }
 }
