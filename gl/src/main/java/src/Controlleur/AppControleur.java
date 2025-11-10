@@ -2,13 +2,15 @@ package src.Controlleur;
 
 import src.Model.FacadeModele;
 import src.Vue.IVue;
+import src.Vue.VueCreationPartie;
 import src.Vue.VueTableauDeBord;
 import src.Vue.VueCreationPersonnage;
 
 import java.util.Map;
 
 /**
- * Contrôleur principal orchestrant la navigation entre vues et l'accès à la façade.
+ * Contrôleur principal orchestrant la navigation entre vues et l'accès à la
+ * façade.
  */
 public class AppControleur {
 	private final FacadeModele modele;
@@ -35,6 +37,12 @@ public class AppControleur {
 	public void afficherCreationPersonnage() {
 		VueCreationPersonnage vue = new VueCreationPersonnage();
 		vue.setControleur(personnageCtrl);
+		changerVue(vue);
+	}
+
+	public void afficherPropositionPartie() {
+		VueCreationPartie vue = new VueCreationPartie();
+		vue.setControleur(partieCtrl);
 		changerVue(vue);
 	}
 

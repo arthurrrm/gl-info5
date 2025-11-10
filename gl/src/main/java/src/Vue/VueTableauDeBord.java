@@ -23,7 +23,9 @@ public class VueTableauDeBord extends VueAbstraite {
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel actions = new JPanel();
 		actions.add(btnCreerPerso);
+		btnCreerPerso.addActionListener(e -> controleur.afficherCreationPersonnage());
 		actions.add(btnProposerPartie);
+		btnProposerPartie.addActionListener(e -> controleur.afficherPropositionPartie());
 		panel.add(actions, BorderLayout.NORTH);
 		panel.add(new JScrollPane(listePersonnages), BorderLayout.CENTER);
 		setContentPane(panel);
