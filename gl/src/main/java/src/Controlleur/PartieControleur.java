@@ -1,6 +1,8 @@
 package src.Controlleur;
 
 import src.Model.FacadeModele;
+import src.Model.Univers;
+
 import java.util.Map;
 
 /**
@@ -17,7 +19,7 @@ public class PartieControleur {
 		// Extraction minimale (titre, univers...) - squelette
 		String titre = donnees.get("titre");
 		String universNom = donnees.get("univers");
-		// Univers / autres champs à récupérer dans une implémentation future
-		modele.proposerPartie(titre, null); // Univers null pour l'instant (squelette)
+		Univers univers = modele.getUnivers(universNom);
+		modele.proposerPartie(titre, univers); // Univers null pour l'instant (squelette)
 	}
 }

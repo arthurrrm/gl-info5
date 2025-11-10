@@ -9,8 +9,8 @@ import java.util.List;
 public class GestionnaireParties {
 	private final List<Partie> parties = new ArrayList<Partie>();
 
-	public Partie creerPartie(String titre, Univers univers) {
-		Partie partie = new Partie(titre, univers);
+	public Partie creerPartie(String titre, Univers univers, Utilisateur maitreJeu) {
+		Partie partie = new Partie(titre, univers, maitreJeu);
 		parties.add(partie);
 		return partie;
 	}

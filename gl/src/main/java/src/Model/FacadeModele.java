@@ -9,10 +9,12 @@ import java.util.List;
 public class FacadeModele {
 	private final GestionnairePersonnages gestionnairePersonnages;
 	private final GestionnaireParties gestionnaireParties;
+	private final UniversManager universManager;
 
 	public FacadeModele() {
 		this.gestionnairePersonnages = new GestionnairePersonnages();
 		this.gestionnaireParties = new GestionnaireParties();
+		this.universManager = new UniversManager();
 	}
 
 	public Personnage creerPersonnage(String nom, Univers univers) {
@@ -21,6 +23,10 @@ public class FacadeModele {
 
 	public Partie proposerPartie(String titre, Univers univers) {
 		return gestionnaireParties.creerPartie(titre, univers);
+	}
+
+	public Univers getUnivers(String nom) {
+		return universManager.getOrCreate(nom);
 	}
 
 	public List<Personnage> getPersonnagesUtilisateur(Utilisateur user) {

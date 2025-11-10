@@ -42,7 +42,8 @@ public class AppControleur {
 
 	public void afficherPropositionPartie() {
 		VueCreationPartie vue = new VueCreationPartie();
-		vue.setControleur(partieCtrl);
+		vue.setPartieControleur(partieCtrl);
+		vue.setAppControleur(this);
 		changerVue(vue);
 	}
 
