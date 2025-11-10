@@ -3,6 +3,7 @@ package src.Controlleur;
 import src.Model.FacadeModele;
 import src.Model.Utilisateur;
 import src.Vue.IVue;
+import src.Vue.VueConnection;
 import src.Vue.VueCreationPartie;
 import src.Vue.VueTableauDeBord;
 import src.Vue.VueCreationPersonnage;
@@ -27,7 +28,7 @@ public class AppControleur {
 	}
 
 	public void demarrerApplication() {
-		afficherTableauDeBord();
+		afficherConnexionUtilisateur();
 	}
 
 	public void afficherTableauDeBord() {
@@ -48,8 +49,15 @@ public class AppControleur {
 		changerVue(vue);
 	}
 
+	public void afficherConnexionUtilisateur() {
+		VueConnection vue = new VueConnection(this);
+		vue.setAppControleur(this);
+		changerVue(vue);
+	}
+
 	public void seConnecter(String nomUtilisateur) {
 		utilisateurConnecte = modele.connecterUtilisateur(nomUtilisateur);
+
 	}
 
 	private void changerVue(IVue nouvelle) {

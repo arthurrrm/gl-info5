@@ -12,6 +12,8 @@ public class GestionnaireParties {
 	public Partie creerPartie(String titre, Univers univers, Utilisateur maitreJeu) {
 		Partie partie = new Partie(titre, univers, maitreJeu);
 		parties.add(partie);
+		System.out.println("Partie créée : " + titre + " dans l'univers " + univers.getNom() + " par "
+				+ maitreJeu.getNom());
 		return partie;
 	}
 

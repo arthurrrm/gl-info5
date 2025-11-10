@@ -27,8 +27,13 @@ public class VueConnection extends VueAbstraite {
 		btnConnecter.addActionListener(e -> {
 			String nomUtilisateur = champNomUtilisateur.getText();
 			appControleur.seConnecter(nomUtilisateur);
+			appControleur.afficherTableauDeBord();
 		});
 		setContentPane(panel);
+	}
+
+	public void setAppControleur(AppControleur appCtrl) {
+		this.appControleur = appCtrl;
 	}
 
 }
