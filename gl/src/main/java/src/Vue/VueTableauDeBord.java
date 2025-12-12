@@ -16,6 +16,7 @@ import src.Model.Personnage;
 public class VueTableauDeBord extends VueAbstraite {
 	private JButton btnCreerPerso = new JButton("Créer personnage");
 	private JButton btnProposerPartie = new JButton("Proposer partie");
+	private JButton btnGererDemandes = new JButton("Gérer les demandes MJ");
 	private JList<Personnage> listePersonnages = new JList<Personnage>();
 	private AppControleur controleur;
 	private ArrayList<JButton> boutonsPartie = new ArrayList<JButton>();
@@ -33,6 +34,8 @@ public class VueTableauDeBord extends VueAbstraite {
 		btnCreerPerso.addActionListener(e -> controleur.afficherCreationPersonnage());
 		actions.add(btnProposerPartie);
 		btnProposerPartie.addActionListener(e -> controleur.afficherPropositionPartie());
+		actions.add(btnGererDemandes);
+		btnGererDemandes.addActionListener(e -> controleur.afficherDemandesMJ());
 		panel.add(actions, BorderLayout.NORTH);
 		panel.add(new JScrollPane(listePersonnages), BorderLayout.CENTER);
 		setContentPane(panel);

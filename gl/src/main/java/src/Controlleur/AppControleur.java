@@ -2,12 +2,14 @@ package src.Controlleur;
 
 import src.Model.FacadeModele;
 import src.Model.Partie;
+import src.Model.Personnage;
 import src.Model.Utilisateur;
 import src.Vue.IVue;
 import src.Vue.VueConnection;
 import src.Vue.VueCreationPartie;
 import src.Vue.VueTableauDeBord;
 import src.Vue.VueCreationPersonnage;
+import src.Vue.VueDemandesMJ;
 import src.Vue.VuePartie;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class AppControleur {
 
 	public AppControleur(FacadeModele modele) {
 		this.modele = modele;
-		this.personnageCtrl = new PersonnageControleur(modele);
+		this.personnageCtrl = new PersonnageControleur(modele, this);
 		this.partieCtrl = new PartieControleur(modele);
 	}
 
@@ -41,7 +43,8 @@ public class AppControleur {
 
 	public void afficherCreationPersonnage() {
 		VueCreationPersonnage vue = new VueCreationPersonnage();
-		vue.setControleur(personnageCtrl);
+		// On passe les deux contrôleurs à la vue
+		vue.setControleurs(this, personnageCtrl);
 		changerVue(vue);
 	}
 
@@ -74,9 +77,11 @@ public class AppControleur {
 		vueCourante.afficher();
 	}
 
-	// Facilite le passage de données issues des vues si nécessaire
-	public void creerPersonnageDepuisDonnees(Map<String, String> donnees) {
-		personnageCtrl.traiterCreationPersonnage(donnees);
+	// Renommé et clarifié pour mieux correspondre à son rôle
+	public void creerPersonnageDepuisVue(Map<String, String> donnees) {
+		// Le contrôleur principal passe le contexte (utilisateur connecté)
+		// au contrôleur spécialisé.
+		personnageCtrl.traiterCreationPersonnage(donnees, utilisateurConnecte);
 	}
 
 	public void creerPartieDepuisDonnees(Map<String, String> donnees) {
@@ -90,6 +95,20 @@ public class AppControleur {
 	public void addUnivers(String nomUnivers) {
 		modele.addUnivers(nomUnivers);
 	}
+
+	public List<String> getNomsUtilisateurs() {
+		List<String> utilisateurs = modele.getNomsUtilisateurs();
+		return utilisateurs;
+	}
+
+	    public void afficherDemandesMJ() {
+        VueDemandesMJ vue = new VueDemandesMJ();
+        vue.setControleurs(this, personnageCtrl);
+        // On charge les demandes pour l'utilisateur actuellement connecté
+        List<Personnage> demandes = modele.getDemandesEnAttente(utilisateurConnecte);
+        vue.setDemandes(demandes);
+        changerVue(vue);
+    }
 
 	public List<Partie> getPartiesUtilisateur() {
 		// Retourne les parties disponibles pour l'utilisateur connecté

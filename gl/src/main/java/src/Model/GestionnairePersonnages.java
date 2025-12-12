@@ -9,10 +9,9 @@ import java.util.List;
 public class GestionnairePersonnages {
 	private final List<Personnage> personnages = new ArrayList<Personnage>();
 
-	public Personnage creerPersonnage(String nom, Univers univers) {
-		Personnage p = new Personnage(nom, univers);
-		personnages.add(p);
-		return p;
+	public void ajouter(Personnage perso) {
+		personnages.add(perso);
+		System.out.println("Personnage ajouté : " + perso.getNom() + " dans l'univers " + perso.getUnivers().getNom());
 	}
 
 	public void validerEpisode(Episode episode, Utilisateur user) {

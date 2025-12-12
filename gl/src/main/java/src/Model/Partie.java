@@ -9,13 +9,13 @@ import java.util.List;
 public class Partie {
 	private String titre;
 	private Univers univers;
-	private final List<Personnage> participants = new ArrayList<Personnage>();
-	private StatusPartie statut = StatusPartie.PROPOSEE;
-	private String resumeFinal;
+	private List<Personnage> participants = new ArrayList<Personnage>();
+	private StatusPartie statut = StatusPartie.EN_COURS;
 	private Utilisateur maitreJeu;
 	private Paragraphe situationInitiale;
 	private String lieu;
 	private String dateStr;
+	private String resumeFinal;
 
 	public Partie(String titre, Univers univers, Utilisateur maitreJeu, Paragraphe situationInitiale,
 			String lieu, String dateStr) {
@@ -28,9 +28,7 @@ public class Partie {
 	}
 
 	public void ajouterParticipant(Personnage perso) {
-		if (!participants.contains(perso) && perso.getUnivers() == this.univers) {
-			participants.add(perso);
-		}
+		participants.add(perso); 
 	}
 
 	public void finaliser(String resume) {

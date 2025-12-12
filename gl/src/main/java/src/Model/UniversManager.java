@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UniversManager {
-	Map<String, Univers> universMap;
+	private Map<String, Univers> universMap;
 
 	public UniversManager(Map<String, Univers> universMap) {
 		this.universMap = universMap;
@@ -29,5 +29,4 @@ public class UniversManager {
 	public List<String> getNomsUnivers() {
 		return new ArrayList<>(universMap.keySet());
 	}
-
 }
