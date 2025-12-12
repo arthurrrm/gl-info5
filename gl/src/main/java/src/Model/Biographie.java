@@ -19,5 +19,19 @@ public class Biographie {
 		return Collections.unmodifiableList(episodes);
 	}
 
-	public List<Episode> getEpisodes() { return episodes; }
+	public List<Episode> getEpisodes() {
+		return episodes;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Episode ep : episodes) {
+			sb.append("Episode: ").append(ep.getStatut()).append("\n");
+			for (Paragraphe p : ep.getContenu()) {
+				sb.append(" - Paragraphe: ").append(p.getTexte()).append("\n");
+			}
+		}
+		return sb.toString();
+	}
 }
