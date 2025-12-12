@@ -1,10 +1,14 @@
 package src.Vue;
 
 import java.awt.GridLayout;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -16,7 +20,7 @@ public class VueCreationPartie extends VueAbstraite {
 	private JButton btnValider = new JButton("Valider");
 	private JButton btnAnnuler = new JButton("Annuler");
 	private JTextField champNomPartie = new JTextField(20);
-	private JTextField champUnivers = new JTextField(20);
+	private JComboBox<String> champUnivers = new JComboBox<String>();
 	private AppControleur appControleur;
 
 	public VueCreationPartie() {
@@ -31,13 +35,27 @@ public class VueCreationPartie extends VueAbstraite {
 		panel.add(champNomPartie);
 
 		panel.add(new JLabel("Univers :"));
+
 		panel.add(champUnivers);
 
 		panel.add(btnValider);
+
 		btnValider.addActionListener(e -> {
 			// Récupérer les données et appeler le contrôleur de partie
 			String nomPartie = champNomPartie.getText();
-			String univers = champUnivers.getText();
+			String univers = (String) champUnivers.getSelectedItem();
+			if (univers.equals("Nouveau")) {
+				String nomUnivers = JOptionPane.showInputDialog("Veuillez entrer le nom de l'univers :");
+				if (nomUnivers != null && !nomUnivers.trim().isEmpty()) {
+					appControleur.addUnivers(nomUnivers.trim());
+					univers = nomUnivers.trim();
+				} else {
+					// Annuler la création de la partie si le nom de l'univers est invalide
+					JOptionPane.showMessageDialog(this, "Le nom de l'univers ne peut pas être vide.", "Erreur",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
 			appControleur.creerPartieDepuisDonnees(Map.of(
 					"titre", nomPartie,
 					"univers", univers));
@@ -51,6 +69,9 @@ public class VueCreationPartie extends VueAbstraite {
 
 	public void setAppControleur(AppControleur appCtrl) {
 		this.appControleur = appCtrl;
+		List<String> universDisponibles = appControleur.getUniversDisponibles();
+		universDisponibles.add("Nouveau");
+		champUnivers.setModel(new DefaultComboBoxModel<>(universDisponibles.toArray(new String[0])));
 	}
 
 }

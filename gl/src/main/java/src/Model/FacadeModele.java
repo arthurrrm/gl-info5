@@ -50,4 +50,12 @@ public class FacadeModele {
 	public List<Partie> getPartiesDisponibles() {
 		return new ArrayList<Partie>(gestionnaireParties.getParties());
 	}
+
+	public List<String> getUniversDisponibles() {
+		return universManager.getNomsUnivers();
+	}
+
+	public void addUnivers(String nomUnivers) {
+		universManager.getOrCreate(nomUnivers);
+	}
 }

@@ -8,6 +8,7 @@ import src.Vue.VueCreationPartie;
 import src.Vue.VueTableauDeBord;
 import src.Vue.VueCreationPersonnage;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,5 +76,13 @@ public class AppControleur {
 
 	public void creerPartieDepuisDonnees(Map<String, String> donnees) {
 		partieCtrl.traiterPropositionPartie(donnees, utilisateurConnecte);
+	}
+
+	public List<String> getUniversDisponibles() {
+		return modele.getUniversDisponibles();
+	}
+
+	public void addUnivers(String nomUnivers) {
+		modele.addUnivers(nomUnivers);
 	}
 }
