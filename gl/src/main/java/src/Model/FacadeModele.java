@@ -39,7 +39,8 @@ public class FacadeModele {
 		List<String> lignes = lireRessourceLignes(path);
 		for (String l : lignes) {
 			String line = l.trim();
-			if (line.isEmpty() || line.startsWith("#")) continue;
+			if (line.isEmpty() || line.startsWith("#"))
+				continue;
 			addUnivers(line);
 		}
 	}
@@ -48,7 +49,8 @@ public class FacadeModele {
 		List<String> lignes = lireRessourceLignes(path);
 		for (String l : lignes) {
 			String line = l.trim();
-			if (line.isEmpty() || line.startsWith("#")) continue;
+			if (line.isEmpty() || line.startsWith("#"))
+				continue;
 			utilisateurManager.connecterUtilisateur(line);
 		}
 	}
@@ -57,9 +59,11 @@ public class FacadeModele {
 		List<String> lignes = lireRessourceLignes(path);
 		for (String l : lignes) {
 			String line = l.trim();
-			if (line.isEmpty() || line.startsWith("#")) continue;
+			if (line.isEmpty() || line.startsWith("#"))
+				continue;
 			String[] p = line.split(";");
-			if (p.length < 7) continue;
+			if (p.length < 7)
+				continue;
 			String nom = p[0];
 			String dateNaissance = p[1];
 			String profession = p[2];
@@ -77,9 +81,11 @@ public class FacadeModele {
 		List<String> lignes = lireRessourceLignes(path);
 		for (String l : lignes) {
 			String line = l.trim();
-			if (line.isEmpty() || line.startsWith("#")) continue;
+			if (line.isEmpty() || line.startsWith("#"))
+				continue;
 			String[] p = line.split(";");
-			if (p.length < 3) continue;
+			if (p.length < 3)
+				continue;
 			String titre = p[0];
 			String universNom = p[1];
 			String mjNom = p[2];
@@ -103,9 +109,11 @@ public class FacadeModele {
 
 	private List<String> lireRessourceLignes(String resourcePath) throws Exception {
 		java.io.InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath);
-		if (is == null) throw new IllegalArgumentException("Ressource introuvable: " + resourcePath);
+		if (is == null)
+			throw new IllegalArgumentException("Ressource introuvable: " + resourcePath);
 		List<String> lignes = new java.util.ArrayList<String>();
-		try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(is, java.nio.charset.StandardCharsets.UTF_8))) {
+		try (java.io.BufferedReader br = new java.io.BufferedReader(
+				new java.io.InputStreamReader(is, java.nio.charset.StandardCharsets.UTF_8))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				lignes.add(line);
@@ -143,7 +151,7 @@ public class FacadeModele {
 		// Filtrage simple sur propriétaire
 		List<Personnage> result = new ArrayList<Personnage>();
 		for (Personnage p : gestionnairePersonnages.getPersonnages()) {
-			if (p.getProprietaire().equals(user) || (mj && p.getMj().equals(user))) {
+			if (p.getProprietaire().equals(user) || (mj && p.getMj() != null && p.getMj().equals(user))) {
 				result.add(p);
 			}
 		}

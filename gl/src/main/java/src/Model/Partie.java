@@ -10,7 +10,7 @@ public class Partie {
 	private String titre;
 	private Univers univers;
 	private List<Personnage> participants = new ArrayList<Personnage>();
-	private StatusPartie statut = StatusPartie.EN_COURS;
+	private StatusPartie statut = StatusPartie.PROPOSEE;
 	private Utilisateur maitreJeu;
 	private Paragraphe situationInitiale;
 	private String lieu;
@@ -28,7 +28,7 @@ public class Partie {
 	}
 
 	public void ajouterParticipant(Personnage perso) {
-		participants.add(perso); 
+		participants.add(perso);
 	}
 
 	public void finaliser(String resume) {

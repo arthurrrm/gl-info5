@@ -8,7 +8,7 @@ import src.Model.StatusEpisode;
  */
 public class Personnage {
 	private String nom;
-	private String dateNaissance; 
+	private String dateNaissance;
 	private String profession;
 	private Univers univers;
 	private Biographie biographie;
@@ -48,28 +48,74 @@ public class Personnage {
 	}
 
 	// Getters / Setters
-	public String getNom() { return nom; }
-	public void setNom(String nom) { this.nom = nom; }
-	public String getDateNaissance() { return dateNaissance; }
-	public void setDateNaissance(String dateNaissance) { this.dateNaissance = dateNaissance; }
-	public String getProfession() { return profession; }
-	public void setProfession(String profession) { this.profession = profession; }
-	public Univers getUnivers() { return univers; }
-	public void setUnivers(Univers univers) { this.univers = univers; }
-	public Biographie getBiographie() { return biographie; }
-	public Utilisateur getProprietaire() { return proprietaire; }
-	public void setProprietaire(Utilisateur proprietaire) { this.proprietaire = proprietaire; }
-	public Utilisateur getMj() { return mj; }
-	public void setMj(Utilisateur mj) { this.mj = mj; }
-	public Utilisateur getMjPropose() {	return mjPropose;}
-    public void setMjPropose(Utilisateur mjPropose) { this.mjPropose = mjPropose; }
-    public StatusPersonnage getStatut() { return statut; }
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getDateNaissance() {
+		return dateNaissance;
+	}
+
+	public void setDateNaissance(String dateNaissance) {
+		this.dateNaissance = dateNaissance;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+
+	public Univers getUnivers() {
+		return univers;
+	}
+
+	public void setUnivers(Univers univers) {
+		this.univers = univers;
+	}
+
+	public Biographie getBiographie() {
+		return biographie;
+	}
+
+	public Utilisateur getProprietaire() {
+		return proprietaire;
+	}
+
+	public void setProprietaire(Utilisateur proprietaire) {
+		this.proprietaire = proprietaire;
+	}
+
+	public Utilisateur getMj() {
+		return mj;
+	}
+
+	public void setMj(Utilisateur mj) {
+		this.mj = mj;
+	}
+
+	public Utilisateur getMjPropose() {
+		return mjPropose;
+	}
+
+	public void setMjPropose(Utilisateur mjPropose) {
+		this.mjPropose = mjPropose;
+	}
+
+	public StatusPersonnage getStatut() {
+		return statut;
+	}
 
 	public void setStatut(StatusPersonnage statut) {
 		this.statut = statut;
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		return this.nom + " (" + this.univers.getNom() + ")";

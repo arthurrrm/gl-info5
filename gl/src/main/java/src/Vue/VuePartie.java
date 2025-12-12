@@ -1,8 +1,10 @@
 package src.Vue;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,13 +29,21 @@ public class VuePartie extends VueAbstraite {
 	private void initUI() {
 
 		JPanel panel = new JPanel();
-		panel.add(new JLabel("Partie: " + partie.getTitre()));
-		panel.add(new JLabel("Univers: " + partie.getUnivers().getNom()));
-		panel.add(new JLabel("Maitre du jeu: " + partie.getMaitreJeu().getNom()));
-		panel.add(new JLabel("Situation initiale: " + partie.getSituationInitiale().getTexte()));
-		panel.add(new JLabel("Lieu: " + partie.getLieu()));
-		panel.add(new JLabel("Date: " + partie.getDateStr()));
+		panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
+		JPanel info = new JPanel();
+		info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
+		info.setAlignmentX(Component.LEFT_ALIGNMENT);
+		info.add(new JLabel("Partie: " + partie.getTitre()));
+		info.add(new JLabel("Univers: " + partie.getUnivers().getNom()));
+		info.add(new JLabel("Maitre du jeu: " + partie.getMaitreJeu().getNom()));
+		info.add(new JLabel("Situation initiale: " + partie.getSituationInitiale().getTexte()));
+		info.add(new JLabel("Lieu: " + partie.getLieu()));
+		info.add(new JLabel("Date: " + partie.getDateStr()));
+		panel.add(info);
 		JPanel statutPanel = new JPanel();
+		statutPanel.setLayout(new BoxLayout(statutPanel, BoxLayout.Y_AXIS));
+		statutPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
 		statutPanel.add(new JLabel("Statut: " + partie.getStatut()));
 		if ((partie.getStatut().equals(StatusPartie.PROPOSEE)) &&
 				partie.getMaitreJeu().equals(controleur.getUtilisateurConnecte())) {
@@ -70,6 +80,7 @@ public class VuePartie extends VueAbstraite {
 
 		panel.add(statutPanel);
 		JPanel joueursPanel = new JPanel();
+		joueursPanel.setLayout(new javax.swing.BoxLayout(joueursPanel, javax.swing.BoxLayout.Y_AXIS));
 		joueursPanel.add(new JLabel("Listes des personnages:"));
 		List<Personnage> personnages = partie.getParticipants();
 		for (Personnage p : personnages) {
@@ -121,6 +132,13 @@ public class VuePartie extends VueAbstraite {
 		});
 		joueursPanel.add(btnAjouterPerso);
 		panel.add(joueursPanel);
+		JButton btnFermer = new JButton("Fermer");
+		btnFermer.addActionListener(e -> {
+			this.dispose();
+			controleur.afficherTableauDeBord();
+		});
+		btnFermer.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel.add(btnFermer);
 
 		setContentPane(panel);
 	}
