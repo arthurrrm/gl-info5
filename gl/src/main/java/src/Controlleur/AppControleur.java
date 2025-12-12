@@ -1,12 +1,14 @@
 package src.Controlleur;
 
 import src.Model.FacadeModele;
+import src.Model.Partie;
 import src.Model.Utilisateur;
 import src.Vue.IVue;
 import src.Vue.VueConnection;
 import src.Vue.VueCreationPartie;
 import src.Vue.VueTableauDeBord;
 import src.Vue.VueCreationPersonnage;
+import src.Vue.VuePartie;
 
 import java.util.List;
 import java.util.Map;
@@ -33,8 +35,7 @@ public class AppControleur {
 	}
 
 	public void afficherTableauDeBord() {
-		VueTableauDeBord vue = new VueTableauDeBord();
-		vue.setControleur(this);
+		VueTableauDeBord vue = new VueTableauDeBord(this);
 		changerVue(vue);
 	}
 
@@ -52,7 +53,11 @@ public class AppControleur {
 
 	public void afficherConnexionUtilisateur() {
 		VueConnection vue = new VueConnection(this);
-		vue.setAppControleur(this);
+		changerVue(vue);
+	}
+
+	public void afficherPartie(Partie partie) {
+		VuePartie vue = new VuePartie(partie, this);
 		changerVue(vue);
 	}
 
@@ -84,5 +89,10 @@ public class AppControleur {
 
 	public void addUnivers(String nomUnivers) {
 		modele.addUnivers(nomUnivers);
+	}
+
+	public List<Partie> getPartiesUtilisateur() {
+		// Retourne les parties disponibles pour l'utilisateur connecté
+		return modele.getPartiesDisponibles();
 	}
 }

@@ -1,6 +1,7 @@
 package src.Controlleur;
 
 import src.Model.FacadeModele;
+import src.Model.Paragraphe;
 import src.Model.Univers;
 
 import java.util.Map;
@@ -20,6 +21,9 @@ public class PartieControleur {
 		String titre = donnees.get("titre");
 		String universNom = donnees.get("univers");
 		Univers univers = modele.getUnivers(universNom);
-		modele.proposerPartie(titre, univers, utilisateurConnecte);
+		Paragraphe situationInitiale = new Paragraphe(donnees.get("situationInitiale"), false);
+		String lieu = donnees.get("lieu");
+		String dateStr = donnees.get("date");
+		modele.proposerPartie(titre, univers, utilisateurConnecte, situationInitiale, lieu, dateStr);
 	}
 }

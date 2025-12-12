@@ -23,8 +23,9 @@ public class FacadeModele {
 		return gestionnairePersonnages.creerPersonnage(nom, univers);
 	}
 
-	public Partie proposerPartie(String titre, Univers univers, Utilisateur maitreJeu) {
-		return gestionnaireParties.creerPartie(titre, univers, maitreJeu);
+	public Partie proposerPartie(String titre, Univers univers, Utilisateur maitreJeu, Paragraphe situationInitiale,
+			String lieu, String dateStr) {
+		return gestionnaireParties.creerPartie(titre, univers, maitreJeu, situationInitiale, lieu, dateStr);
 	}
 
 	public Utilisateur connecterUtilisateur(String nomUtilisateur) {

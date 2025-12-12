@@ -1,12 +1,14 @@
 package src.Vue;
 
 import java.awt.GridLayout;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,6 +23,9 @@ public class VueCreationPartie extends VueAbstraite {
 	private JButton btnAnnuler = new JButton("Annuler");
 	private JTextField champNomPartie = new JTextField(20);
 	private JComboBox<String> champUnivers = new JComboBox<String>();
+	private JTextField champSituationInitiale = new JTextField(200);
+	private JTextField champLieu = new JTextField(200);
+	private JTextField champDate = new JTextField("jj/mm/aaaa", 20);
 	private AppControleur appControleur;
 
 	public VueCreationPartie() {
@@ -29,7 +34,7 @@ public class VueCreationPartie extends VueAbstraite {
 	}
 
 	private void initUI() {
-		JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5)); // 3 lignes, 2 colonnes, espaces de 5px
+		JPanel panel = new JPanel(new GridLayout(6, 2, 5, 5)); // 6 lignes, 2 colonnes, espaces de 5px
 
 		panel.add(new JLabel("Nom de la partie :"));
 		panel.add(champNomPartie);
@@ -37,6 +42,14 @@ public class VueCreationPartie extends VueAbstraite {
 		panel.add(new JLabel("Univers :"));
 
 		panel.add(champUnivers);
+
+		panel.add(new JLabel("Situation initiale :"));
+		panel.add(champSituationInitiale);
+
+		panel.add(new JLabel("Lieu :"));
+		panel.add(champLieu);
+		panel.add(new JLabel("Date (jj/mm/aaaa) :"));
+		panel.add(champDate);
 
 		panel.add(btnValider);
 
@@ -58,7 +71,10 @@ public class VueCreationPartie extends VueAbstraite {
 			}
 			appControleur.creerPartieDepuisDonnees(Map.of(
 					"titre", nomPartie,
-					"univers", univers));
+					"univers", univers,
+					"situationInitiale", champSituationInitiale.getText(),
+					"lieu", champLieu.getText(),
+					"date", champDate.getText()));
 			appControleur.afficherTableauDeBord();
 		});
 		panel.add(btnAnnuler);

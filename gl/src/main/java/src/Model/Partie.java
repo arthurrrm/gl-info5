@@ -13,11 +13,18 @@ public class Partie {
 	private StatusPartie statut = StatusPartie.PROPOSEE;
 	private String resumeFinal;
 	private Utilisateur maitreJeu;
+	private Paragraphe situationInitiale;
+	private String lieu;
+	private String dateStr;
 
-	public Partie(String titre, Univers univers, Utilisateur maitreJeu) {
+	public Partie(String titre, Univers univers, Utilisateur maitreJeu, Paragraphe situationInitiale,
+			String lieu, String dateStr) {
 		this.titre = titre;
 		this.univers = univers;
 		this.maitreJeu = maitreJeu;
+		this.situationInitiale = situationInitiale;
+		this.lieu = lieu;
+		this.dateStr = dateStr;
 	}
 
 	public void ajouterParticipant(Personnage perso) {
@@ -62,5 +69,21 @@ public class Partie {
 
 	public String getResumeFinal() {
 		return resumeFinal;
+	}
+
+	public Utilisateur getMaitreJeu() {
+		return maitreJeu;
+	}
+
+	public Paragraphe getSituationInitiale() {
+		return situationInitiale;
+	}
+
+	public String getLieu() {
+		return lieu;
+	}
+
+	public String getDateStr() {
+		return dateStr;
 	}
 }
