@@ -2,6 +2,7 @@ package src.Controlleur;
 
 import src.Model.FacadeModele;
 import src.Model.Partie;
+import src.Model.Personnage;
 import src.Model.Utilisateur;
 import src.Vue.IVue;
 import src.Vue.VueConnection;
@@ -63,7 +64,6 @@ public class AppControleur {
 
 	public void seConnecter(String nomUtilisateur) {
 		utilisateurConnecte = modele.connecterUtilisateur(nomUtilisateur);
-
 	}
 
 	private void changerVue(IVue nouvelle) {
@@ -92,7 +92,15 @@ public class AppControleur {
 	}
 
 	public List<Partie> getPartiesUtilisateur() {
-		// Retourne les parties disponibles pour l'utilisateur connecté
 		return modele.getPartiesDisponibles();
 	}
+
+	public Utilisateur getUtilisateurConnecte() {
+		return utilisateurConnecte;
+	}
+
+	public List<Personnage> getPersonnages(Boolean mj) {
+		return modele.getPersonnagesUtilisateur(utilisateurConnecte, mj);
+	}
+
 }

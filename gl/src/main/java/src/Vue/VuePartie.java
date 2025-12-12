@@ -1,7 +1,17 @@
 package src.Vue;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import src.Controlleur.AppControleur;
 import src.Model.Partie;
+import src.Model.Personnage;
+import src.Model.StatusPartie;
 
 public class VuePartie extends VueAbstraite {
 	private Partie partie;
@@ -15,10 +25,108 @@ public class VuePartie extends VueAbstraite {
 	}
 
 	private void initUI() {
-		// Initialisation de l'interface utilisateur pour la vue de la partie
+
+		JPanel panel = new JPanel();
+		panel.add(new JLabel("Partie: " + partie.getTitre()));
+		panel.add(new JLabel("Univers: " + partie.getUnivers().getNom()));
+		panel.add(new JLabel("Maitre du jeu: " + partie.getMaitreJeu().getNom()));
+		panel.add(new JLabel("Situation initiale: " + partie.getSituationInitiale().getTexte()));
+		panel.add(new JLabel("Lieu: " + partie.getLieu()));
+		panel.add(new JLabel("Date: " + partie.getDateStr()));
+		JPanel statutPanel = new JPanel();
+		statutPanel.add(new JLabel("Statut: " + partie.getStatut()));
+		if ((partie.getStatut().equals(StatusPartie.PROPOSEE)) &&
+				partie.getMaitreJeu().equals(controleur.getUtilisateurConnecte())) {
+
+			JButton btnDemarrer = new JButton("Démarrer la partie");
+			btnDemarrer.addActionListener(e -> {
+				partie.setStatut(StatusPartie.EN_COURS);
+				JOptionPane.showMessageDialog(null,
+						"La partie a été démarrée.");
+				// Refresh the view
+				this.dispose();
+				controleur.afficherPartie(partie);
+			});
+			statutPanel.add(btnDemarrer);
+		} else if (partie.getStatut().equals(StatusPartie.EN_COURS) &&
+				partie.getMaitreJeu().equals(controleur.getUtilisateurConnecte())) {
+			JButton btnClore = new JButton("Clore la partie");
+			btnClore.addActionListener(e -> {
+				String resume = JOptionPane.showInputDialog("Entrez le résumé final de la partie:");
+				if (resume != null && !resume.trim().isEmpty()) {
+					partie.finaliser(resume);
+					JOptionPane.showMessageDialog(null,
+							"La partie a été clôturée.");
+					// Refresh the view
+					this.dispose();
+					controleur.afficherPartie(partie);
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Le résumé final ne peut pas être vide.");
+				}
+			});
+			statutPanel.add(btnClore);
+		}
+
+		panel.add(statutPanel);
+		JPanel joueursPanel = new JPanel();
+		joueursPanel.add(new JLabel("Listes des personnages:"));
+		List<Personnage> personnages = partie.getParticipants();
+		for (Personnage p : personnages) {
+			joueursPanel.add(new JLabel("- " + p.getNom()));
+		}
+		JButton btnAjouterPerso = new JButton("Ajouter un personnage");
+		btnAjouterPerso.setEnabled(partie.getStatut().equals(StatusPartie.PROPOSEE));
+		btnAjouterPerso.addActionListener(e -> {
+			List<Personnage> persosDisponibles = controleur
+					.getPersonnages(controleur.getUtilisateurConnecte().equals(partie.getMaitreJeu()));
+			ArrayList<Personnage> persosNonParticipants = new ArrayList<>();
+			for (Personnage p : persosDisponibles) {
+				if (!personnages.contains(p) && p.getUnivers().equals(partie.getUnivers())) {
+					persosNonParticipants.add(p);
+				}
+			}
+			if (persosNonParticipants.size() > 0) {
+				// Code to display a dialog for selecting a participant
+				String[] options = persosNonParticipants.stream()
+						.map(Personnage::getNom)
+						.toArray(String[]::new);
+				String selected = (String) JOptionPane.showInputDialog(
+						null,
+						"Sélectionnez un personnage:",
+						"Ajouter un personnage",
+						JOptionPane.QUESTION_MESSAGE,
+						null,
+						options,
+						options[0]);
+
+				if (selected != null) {
+					for (Personnage p : persosNonParticipants) {
+						if (p.getNom().equals(selected)) {
+							partie.ajouterParticipant(p);
+							JOptionPane.showMessageDialog(null,
+									"Personnage " + p.getNom() + " ajouté à la partie.");
+							// Refresh the view
+							this.dispose();
+							controleur.afficherPartie(partie);
+							break;
+						}
+					}
+				}
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"Aucun personnage disponible pour être ajouté à cette partie.");
+			}
+
+		});
+		joueursPanel.add(btnAjouterPerso);
+		panel.add(joueursPanel);
+
+		setContentPane(panel);
 	}
 
 	public void setControleur(AppControleur c) {
 		this.controleur = c;
 	}
+
 }
