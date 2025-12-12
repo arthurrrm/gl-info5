@@ -139,11 +139,11 @@ public class FacadeModele {
 		return universManager.getOrCreate(nom);
 	}
 
-	public List<Personnage> getPersonnagesUtilisateur(Utilisateur user) {
+	public List<Personnage> getPersonnagesUtilisateur(Utilisateur user, Boolean mj) {
 		// Filtrage simple sur propriétaire
 		List<Personnage> result = new ArrayList<Personnage>();
 		for (Personnage p : gestionnairePersonnages.getPersonnages()) {
-			if (p.getProprietaire() == user) {
+			if (p.getProprietaire().equals(user) || (mj && p.getMj().equals(user))) {
 				result.add(p);
 			}
 		}
