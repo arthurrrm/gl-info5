@@ -11,7 +11,7 @@ public abstract class VueAbstraite extends JFrame implements IVue {
 	public VueAbstraite() {
 		this.mainFrame = this;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(600, 400);
+		setSize(800, 600);
 	}
 
 	@Override

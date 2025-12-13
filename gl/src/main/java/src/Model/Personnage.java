@@ -118,6 +118,13 @@ public class Personnage {
 
 	@Override
 	public String toString() {
-		return this.nom + " (" + this.univers.getNom() + ")";
+		String infoStatut = "";
+		if (statut == StatusPersonnage.EN_ATTENTE_MJ) {
+			infoStatut = " [Nouvelle proposition]";
+		} else if (statut == StatusPersonnage.EN_ATTENTE_CHANGEMENT_MJ) {
+			infoStatut = " [Demande de transfert]";
+		}
+		return nom + " (" + univers.getNom() + ")" + infoStatut + " Mj: "
+				+ (mj != null ? mj.getNom() : "Aucun");
 	}
 }

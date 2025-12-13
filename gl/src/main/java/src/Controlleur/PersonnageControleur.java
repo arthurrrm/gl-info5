@@ -2,6 +2,7 @@ package src.Controlleur;
 
 import src.Model.FacadeModele;
 import src.Model.Personnage;
+import src.Model.StatusPersonnage;
 import src.Model.Utilisateur;
 
 import java.util.Map;
@@ -51,14 +52,30 @@ public class PersonnageControleur {
     }
 
 	public void traiterAcceptationPersonnage(Personnage personnage) {
-		modele.accepterPersonnage(personnage);
-		// Rafraîchir la vue pour enlever la demande traitée
+		if (personnage.getStatut() == StatusPersonnage.EN_ATTENTE_MJ) {
+			modele.accepterPersonnage(personnage);
+		} else if (personnage.getStatut() == StatusPersonnage.EN_ATTENTE_CHANGEMENT_MJ) {
+			modele.accepterChangementMJ(personnage);
+		}
 		appControleur.afficherDemandesMJ();
 	}
 
 	public void traiterRefusPersonnage(Personnage personnage) {
-		modele.refuserPersonnage(personnage);
-		// Rafraîchir la vue
-		appControleur.afficherDemandesMJ();
+		if (personnage.getStatut() == StatusPersonnage.EN_ATTENTE_MJ) {
+			modele.refuserPersonnage(personnage); // Supprime le personnage
+		} else if (personnage.getStatut() == StatusPersonnage.EN_ATTENTE_CHANGEMENT_MJ) {
+			modele.refuserChangementMJ(personnage); // Annule juste la demande
+		}
+		appControleur.afficherDemandesMJ(); // Rafraîchir la vue des demandes
 	}
+
+	public void traiterDemandeChangementMJ(Personnage personnage, String nouveauMJNom) {
+		Utilisateur nouveauMJ = modele.getUtilisateurParNom(nouveauMJNom);
+		if (nouveauMJ != null) {
+			modele.demanderChangementMJ(personnage, nouveauMJ);
+			appControleur.afficherTableauDeBord(); // Rafraîchir pour voir le changement de statut
+		}
+	}
+
+	
 }
