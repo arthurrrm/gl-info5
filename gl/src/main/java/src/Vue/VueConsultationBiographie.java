@@ -33,6 +33,7 @@ public class VueConsultationBiographie extends VueAbstraite {
 		List<Episode> episodes = p.getBiographie().getEpisodesChronologiques();
 		int numEpisode = 1;
 		for (int i = 0; i < episodes.size(); i++) {
+			final int ifinal = i;
 			if (episodes.get(i).getStatut() == StatusEpisode.BROUILLON && !fullAccess) {
 				continue;
 			}
@@ -79,11 +80,26 @@ public class VueConsultationBiographie extends VueAbstraite {
 							}
 						});
 						episodePanel.add(btnEditer);
+						JButton btnSupprimer = new JButton("Supprimer le paragraphe");
+						btnSupprimer.addActionListener(e -> {
+							int confirmation = JOptionPane.showConfirmDialog(
+									this,
+									"Êtes-vous sûr de vouloir supprimer ce paragraphe ?",
+									"Confirmation de suppression",
+									JOptionPane.YES_NO_OPTION);
+							if (confirmation == JOptionPane.YES_OPTION) {
+								episodes.get(ifinal).supprimerParagraphe(para);
+								this.dispose();
+								VueConsultationBiographie nouvelleVue = new VueConsultationBiographie(controleur);
+								nouvelleVue.afficherBiographie(p, fullAccess);
+							}
+						});
+						episodePanel.add(btnSupprimer);
 					}
 				}
 			}
 			if (fullAccess && episodes.get(i).getStatut() == StatusEpisode.BROUILLON) {
-				final int ifinal = i;
+
 				JButton btnAjouterParagraphe = new JButton("Ajouter un paragraphe");
 				btnAjouterParagraphe.addActionListener(e -> {
 					String textePara = JOptionPane.showInputDialog(
@@ -112,7 +128,21 @@ public class VueConsultationBiographie extends VueAbstraite {
 					nouvelleVue.afficherBiographie(p, fullAccess);
 				});
 				episodePanel.add(btnPublierEpisode);
-
+				JButton btnSupprimerEpisode = new JButton("Supprimer l'épisode");
+				btnSupprimerEpisode.addActionListener(e -> {
+					int confirmation = JOptionPane.showConfirmDialog(
+							this,
+							"Êtes-vous sûr de vouloir supprimer cet épisode ?",
+							"Confirmation de suppression",
+							JOptionPane.YES_NO_OPTION);
+					if (confirmation == JOptionPane.YES_OPTION) {
+						p.getBiographie().supprimerEpisode(episodes.get(ifinal));
+						this.dispose();
+						VueConsultationBiographie nouvelleVue = new VueConsultationBiographie(controleur);
+						nouvelleVue.afficherBiographie(p, fullAccess);
+					}
+				});
+				episodePanel.add(btnSupprimerEpisode);
 			}
 			panel.add(episodePanel);
 		}

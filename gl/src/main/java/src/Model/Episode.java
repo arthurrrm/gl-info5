@@ -23,6 +23,10 @@ public class Episode {
 		contenu.add(p);
 	}
 
+	public void supprimerParagraphe(Paragraphe p) {
+		contenu.remove(p);
+	}
+
 	public List<Paragraphe> getContenu() {
 		return contenu;
 	}

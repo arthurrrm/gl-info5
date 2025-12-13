@@ -14,6 +14,10 @@ public class Biographie {
 		episodes.add(episode);
 	}
 
+	public void supprimerEpisode(Episode episode) {
+		episodes.remove(episode);
+	}
+
 	public List<Episode> getEpisodesChronologiques() {
 		// Retourne copie non triée (chronologie à définir plus tard)
 		List<Episode> sorted = new ArrayList<>(episodes);
