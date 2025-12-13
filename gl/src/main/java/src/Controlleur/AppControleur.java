@@ -10,6 +10,7 @@ import src.Vue.VueCreationPartie;
 import src.Vue.VueTableauDeBord;
 import src.Vue.VueCreationPersonnage;
 import src.Vue.VueDemandesMJ;
+import src.Vue.VueDemandesTransfert;
 import src.Vue.VuePartie;
 import src.Vue.VueConsultationBiographie;
 
@@ -80,10 +81,7 @@ public class AppControleur {
 		vueCourante.afficher();
 	}
 
-	// Renommé et clarifié pour mieux correspondre à son rôle
 	public void creerPersonnageDepuisVue(Map<String, String> donnees) {
-		// Le contrôleur principal passe le contexte (utilisateur connecté)
-		// au contrôleur spécialisé.
 		personnageCtrl.traiterCreationPersonnage(donnees, utilisateurConnecte);
 	}
 
@@ -113,6 +111,14 @@ public class AppControleur {
 		changerVue(vue);
 	}
 
+	public void afficherDemandesTransfert() {
+		VueDemandesTransfert vue = new VueDemandesTransfert();
+		vue.setControleurs(this, personnageCtrl);
+		List<Personnage> demandes = modele.getDemandesTransfertEnAttente(utilisateurConnecte);
+		vue.setDemandes(demandes);
+		changerVue(vue);
+	}
+
 	public void afficherBiographiePersonnage(Personnage personnage, boolean fullAccess) {
 		VueConsultationBiographie vue = new VueConsultationBiographie(this);
 		vue.afficherBiographie(personnage, fullAccess);
@@ -134,7 +140,7 @@ public class AppControleur {
 
 	public List<Personnage> getPersonnagesUtilisateur() {
 		// Renvoie tous les personnages, actifs ou en attente, pour l'affichage
-		return modele.getPersonnagesUttilisateur(utilisateurConnecte); // Nouvelle méthode à créer dans le modèle
+		return modele.getPersonnagesUttilisateur(utilisateurConnecte);
 	}
 
 	public void lancerChangementMJ(Personnage personnage) {
@@ -161,6 +167,32 @@ public class AppControleur {
 
 		if (nouveauMJNom != null && !nouveauMJNom.isEmpty()) {
 			personnageCtrl.traiterDemandeChangementMJ(personnage, nouveauMJNom);
+		}
+	}
+
+	public void lancerDemandeTransfert(Personnage personnage) {
+		// proposer la liste des autres utilisateurs
+		List<String> choixUsers = modele.getNomsUtilisateurs().stream()
+				.filter(nom -> !nom.equals(utilisateurConnecte.getNom()))
+				.collect(Collectors.toList());
+
+		if (choixUsers.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Aucun autre joueur n'est disponible pour un transfert.", "Information",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+
+		String nouveauPropNom = (String) JOptionPane.showInputDialog(
+				null,
+				"Choisissez le nouveau propriétaire pour " + personnage.getNom() + " :",
+				"Demande de transfert de personnage",
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				choixUsers.toArray(),
+				choixUsers.get(0));
+
+		if (nouveauPropNom != null && !nouveauPropNom.isEmpty()) {
+			personnageCtrl.traiterDemandeTransfert(personnage, nouveauPropNom);
 		}
 	}
 

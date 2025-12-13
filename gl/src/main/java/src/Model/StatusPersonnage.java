@@ -7,4 +7,5 @@ public enum StatusPersonnage {
     EN_ATTENTE_MJ,
     ACTIF,
     EN_ATTENTE_CHANGEMENT_MJ,
+    EN_ATTENTE_TRANSFERT,
 }
