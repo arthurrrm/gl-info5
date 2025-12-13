@@ -5,5 +5,6 @@ package src.Model;
  */
 public enum StatusPersonnage {
     EN_ATTENTE_MJ,
-    ACTIF
+    ACTIF,
+    EN_ATTENTE_CHANGEMENT_MJ,
 }

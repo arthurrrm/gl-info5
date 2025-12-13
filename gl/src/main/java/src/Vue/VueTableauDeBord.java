@@ -20,24 +20,46 @@ public class VueTableauDeBord extends VueAbstraite {
 	private JList<Personnage> listePersonnages = new JList<Personnage>();
 	private AppControleur controleur;
 	private ArrayList<JButton> boutonsPartie = new ArrayList<JButton>();
+	private DefaultListModel<Personnage> listModel;
+	private JButton btnChangerMJ = new JButton("Changer de MJ");
+	private JButton btnDeconnexion = new JButton("Se déconnecter");
 
 	public VueTableauDeBord(AppControleur controleur) {
 		super();
 		this.controleur = controleur;
+		List<Personnage> personnages = controleur.getPersonnagesUtilisateur();
+		listModel = new DefaultListModel<>();
+		for (Personnage p : personnages) {
+			listModel.addElement(p);
+		}
 		initUI();
 	}
 
 	private void initUI() {
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel actions = new JPanel();
+		listePersonnages = new JList<>(listModel);
 		actions.add(btnCreerPerso);
 		btnCreerPerso.addActionListener(e -> controleur.afficherCreationPersonnage());
 		actions.add(btnProposerPartie);
 		btnProposerPartie.addActionListener(e -> controleur.afficherPropositionPartie());
 		actions.add(btnGererDemandes);
 		btnGererDemandes.addActionListener(e -> controleur.afficherDemandesMJ());
+		actions.add(btnChangerMJ);
+		btnChangerMJ.addActionListener(e -> {
+			Personnage selection = listePersonnages.getSelectedValue();
+			if (selection != null) {
+				controleur.lancerChangementMJ(selection);
+			} else {
+				JOptionPane.showMessageDialog(this, "Veuillez sélectionner un personnage.", "Aucune sélection",
+						JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		actions.add(btnDeconnexion);
+		btnDeconnexion.addActionListener(e -> { controleur.deconnecter();});
+
 		panel.add(actions, BorderLayout.NORTH);
-		panel.add(new JScrollPane(listePersonnages), BorderLayout.CENTER);
+		panel.add(new JScrollPane(listePersonnages), BorderLayout.SOUTH);
 		setContentPane(panel);
 		JPanel panelBoutonsPartie = new JPanel();
 		List<Partie> parties = controleur.getPartiesUtilisateur();
@@ -54,10 +76,5 @@ public class VueTableauDeBord extends VueAbstraite {
 		}
 		panel.add(panelBoutonsPartie, BorderLayout.CENTER);
 
-	}
-
-	public void setControleur(AppControleur c) {
-		this.controleur = c;
-		// Listeners à ajouter plus tard
 	}
 }

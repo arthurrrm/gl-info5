@@ -14,6 +14,9 @@ import src.Vue.VuePartie;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.swing.JOptionPane;
 
 /**
  * Contrôleur principal orchestrant la navigation entre vues et l'accès à la
@@ -100,7 +103,7 @@ public class AppControleur {
 		return utilisateurs;
 	}
 
-	    public void afficherDemandesMJ() {
+	public void afficherDemandesMJ() {
         VueDemandesMJ vue = new VueDemandesMJ();
         vue.setControleurs(this, personnageCtrl);
         // On charge les demandes pour l'utilisateur actuellement connecté
@@ -119,6 +122,48 @@ public class AppControleur {
 
 	public List<Personnage> getPersonnages(Boolean mj) {
 		return modele.getPersonnagesUtilisateur(utilisateurConnecte, mj);
+	}
+
+	public List<Personnage> getPersonnagesUtilisateur() {
+		// Renvoie tous les personnages, actifs ou en attente, pour l'affichage
+		return modele.getPersonnagesUttilisateur(utilisateurConnecte); // Nouvelle méthode à créer dans le modèle
+	}
+
+	public void lancerChangementMJ(Personnage personnage) {
+		// Récupérer la liste des MJs potentiels (tous les utilisateurs sauf le joueur lui-même et le MJ actuel)
+		List<String> choixMJ = modele.getNomsUtilisateurs().stream()
+				.filter(nom -> !nom.equals(utilisateurConnecte.getNom()) && !nom.equals(personnage.getMj().getNom()))
+				.collect(Collectors.toList());
+
+		if (choixMJ.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Aucun autre MJ n'est disponible pour un transfert.", "Information",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+
+		String nouveauMJNom = (String) JOptionPane.showInputDialog(
+				null,
+				"Choisissez le nouveau MJ pour " + personnage.getNom() + " :",
+				"Demande de changement de MJ",
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				choixMJ.toArray(),
+				choixMJ.get(0));
+
+		if (nouveauMJNom != null && !nouveauMJNom.isEmpty()) {
+			personnageCtrl.traiterDemandeChangementMJ(personnage, nouveauMJNom);
+		}
+	}
+	
+	/**
+	 * Gère la déconnexion de l'utilisateur.
+	 */
+	public void deconnecter() {
+		System.out.println("Déconnexion de l'utilisateur : "
+				+ (utilisateurConnecte != null ? utilisateurConnecte.getNom() : "aucun"));
+
+		this.utilisateurConnecte = null;
+		afficherConnexionUtilisateur();
 	}
 
 }

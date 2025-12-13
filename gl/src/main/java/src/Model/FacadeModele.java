@@ -173,7 +173,9 @@ public class FacadeModele {
 	// Methodes pour le Mj
 	public List<Personnage> getDemandesEnAttente(Utilisateur mj) {
 		return gestionnairePersonnages.getPersonnages().stream()
-				.filter(p -> p.getStatut() == StatusPersonnage.EN_ATTENTE_MJ && p.getMjPropose().equals(mj))
+				.filter(p -> p.getMjPropose() != null && p.getMjPropose().equals(mj) &&
+						(p.getStatut() == StatusPersonnage.EN_ATTENTE_MJ ||
+								p.getStatut() == StatusPersonnage.EN_ATTENTE_CHANGEMENT_MJ))
 				.collect(Collectors.toList());
 	}
 
@@ -187,11 +189,47 @@ public class FacadeModele {
 		gestionnairePersonnages.getPersonnages().remove(personnage);
 	}
 
+	// Récupérer les personnages actifs d'un utilisateur
+	public List<Personnage> getPersonnagesActifs(Utilisateur utilisateur) {
+		return gestionnairePersonnages.getPersonnages().stream()
+				.filter(p -> p.getProprietaire().equals(utilisateur) && p.getStatut() == StatusPersonnage.ACTIF)
+				.collect(Collectors.toList());
+	}
+
+	// NOUVEAU: Le joueur initie la demande de changement
+	public void demanderChangementMJ(Personnage personnage, Utilisateur nouveauMJ) {
+		if (personnage.getStatut() == StatusPersonnage.ACTIF) {
+			personnage.setMjPropose(nouveauMJ);
+			personnage.setStatut(StatusPersonnage.EN_ATTENTE_CHANGEMENT_MJ);
+			System.out.println(
+					"Demande de changement de MJ pour '" + personnage.getNom() + "' vers '" + nouveauMJ.getNom() + "'");
+		}
+	}
+
+	// NOUVEAU: Le nouveau MJ accepte la prise en charge
+	public void accepterChangementMJ(Personnage personnage) {
+		personnage.setMj(personnage.getMjPropose()); // Le nouveau MJ est assigné
+		personnage.setMjPropose(null);
+		personnage.setStatut(StatusPersonnage.ACTIF); // Retour au statut normal
+	}
+
+	// NOUVEAU: Le nouveau MJ refuse la prise en charge
+	public void refuserChangementMJ(Personnage personnage) {
+		personnage.setMjPropose(null); // Annulation de la proposition
+		personnage.setStatut(StatusPersonnage.ACTIF); // Retour au statut normal avec l'ancien MJ
+	}
+
 	public List<String> getNomsUtilisateurs() {
 		return utilisateurManager.getNomsUtilisateurs();
 	}
 
 	public Utilisateur getUtilisateurParNom(String nomUtilisateur) {
 		return utilisateurManager.getUtilisateurParNom(nomUtilisateur);
+	}
+
+	public List<Personnage> getPersonnagesUttilisateur(Utilisateur utilisateurConnecte) {
+		return gestionnairePersonnages.getPersonnages().stream()
+				.filter(p -> p.getProprietaire().equals(utilisateurConnecte))
+				.collect(Collectors.toList());
 	}
 }
