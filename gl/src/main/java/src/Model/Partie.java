@@ -34,6 +34,11 @@ public class Partie {
 	public void finaliser(String resume) {
 		this.resumeFinal = resume;
 		this.statut = StatusPartie.TERMINEE;
+		for (Personnage p : participants) {
+			Episode episodeFinal = new Episode("Résumé final de la partie " + this.titre, this.dateStr, this);
+			episodeFinal.ajouterParagraphe(new Paragraphe(resume, false));
+			p.ajouterEpisode(episodeFinal);
+		}
 	}
 
 	// Getters / Setters

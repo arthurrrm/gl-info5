@@ -16,13 +16,15 @@ public class Biographie {
 
 	public List<Episode> getEpisodesChronologiques() {
 		// Retourne copie non triée (chronologie à définir plus tard)
-		return Collections.unmodifiableList(episodes);
+		List<Episode> sorted = new ArrayList<>(episodes);
+		Collections.sort(sorted, (e1, e2) -> e1.getDateCreation().compareTo(e2.getDateCreation()));
+		return Collections.unmodifiableList(sorted);
 	}
 
 	public List<Episode> getEpisodes() {
 		return episodes;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

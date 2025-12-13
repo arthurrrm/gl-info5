@@ -64,14 +64,7 @@ public class VueDemandesMJ extends VueAbstraite {
         btnConsulter.addActionListener(e -> {
             Personnage selection = listeDemandes.getSelectedValue();
             if (selection != null) {
-                JOptionPane.showMessageDialog(this,
-                        "Nom: " + selection.getNom() + "\n" +
-                        "Date de Naissance: " + selection.getDateNaissance() + "\n" +
-                        "Profession: " + selection.getProfession() + "\n" +
-                        "Univers: " + selection.getUnivers().getNom() + "\n" +
-                        "Biographie:\n" + selection.getBiographie(),
-                        "Détails du Personnage",
-                        JOptionPane.INFORMATION_MESSAGE);
+                appControleur.afficherBiographiePersonnage(selection, false);
             }
         });
     }

@@ -3,28 +3,107 @@ package src.Vue;
 import javax.swing.*;
 import java.awt.*;
 import src.Model.Personnage;
+import src.Model.StatusEpisode;
 import src.Model.Paragraphe;
+import src.App;
+import src.Controlleur.AppControleur;
+import src.Model.Episode;
+import java.util.List;
 
 /**
  * Vue de consultation de la biographie d'un personnage.
  */
 public class VueConsultationBiographie extends VueAbstraite {
-	private JTextArea zoneTexteBio = new JTextArea();
+	AppControleur controleur;
 
-	public VueConsultationBiographie() {
+	public VueConsultationBiographie(AppControleur controleur) {
 		super();
-		zoneTexteBio.setEditable(false);
 		setLayout(new BorderLayout());
-		add(new JScrollPane(zoneTexteBio), BorderLayout.CENTER);
+		this.controleur = controleur;
+
 	}
 
-	public void afficherBiographie(Personnage p, boolean estPrivee) {
-		StringBuilder sb = new StringBuilder();
-		for (Paragraphe par : p.getBiographie().getEpisodes().isEmpty() ? new java.util.ArrayList<Paragraphe>() : p.getBiographie().getEpisodes().get(0).getContenu()) {
-			if (!par.isEstSecret() || estPrivee) {
-				sb.append(par.getTexte()).append("\n\n");
+	public void afficherBiographie(Personnage p, boolean fullAccess) {
+		this.setTitle("Biographie de " + p.getNom());
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		List<Episode> episodes = p.getBiographie().getEpisodesChronologiques();
+		for (int i = 0; i < episodes.size(); i++) {
+			JPanel episodePanel = new JPanel();
+			episodePanel.setLayout(new BoxLayout(episodePanel, BoxLayout.Y_AXIS));
+			episodePanel.setBorder(BorderFactory.createTitledBorder("Épisode " + (i + 1) + ": "
+					+ episodes.get(i).getTitre()));
+			for (Paragraphe para : episodes.get(i).getContenu()) {
+				if (!para.isEstSecret() || fullAccess) {
+					JTextArea textePara = new JTextArea(para.getTexte());
+					textePara.setLineWrap(true);
+					textePara.setWrapStyleWord(true);
+					textePara.setEditable(false);
+					episodePanel.add(textePara);
+
+					if (episodes.get(i).getStatut() == StatusEpisode.BROUILLON) {
+						JButton btnEditer = new JButton("Éditer le paragraphe");
+						btnEditer.addActionListener(e -> {
+							String nouveauTexte = JOptionPane.showInputDialog(
+									this,
+									"Modifier le paragraphe :",
+									para.getTexte());
+							if (nouveauTexte != null && !nouveauTexte.isEmpty()) {
+								para.setTexte(nouveauTexte);
+								textePara.setText(nouveauTexte);
+							}
+						});
+						episodePanel.add(btnEditer);
+					}
+				}
 			}
+			if (fullAccess) {
+				final int ifinal = i;
+				JButton btnAjouterParagraphe = new JButton("Ajouter un paragraphe");
+				btnAjouterParagraphe.addActionListener(e -> {
+					String textePara = JOptionPane.showInputDialog(
+							this,
+							"Texte du nouveau paragraphe :",
+							"Nouveau Paragraphe");
+					String estSecret = JOptionPane.showInputDialog(
+							this,
+							"Le paragraphe est-il secret ? (oui/non) :",
+							"non");
+					if (textePara != null && !textePara.isEmpty()) {
+						Paragraphe nouveauPara = new Paragraphe(textePara, estSecret.equalsIgnoreCase("oui"));
+						episodes.get(ifinal).ajouterParagraphe(nouveauPara);
+						this.dispose();
+						afficherBiographie(p, fullAccess);
+					}
+				});
+				episodePanel.add(btnAjouterParagraphe);
+			}
+			panel.add(episodePanel);
 		}
-		zoneTexteBio.setText(sb.toString());
+		if (fullAccess) {
+			JButton btnAjouterEpisode = new JButton("Ajouter un nouvel épisode");
+			btnAjouterEpisode.addActionListener(e -> {
+				String titreEpisode = JOptionPane.showInputDialog(
+						this,
+						"Titre de l'épisode :",
+						"Nouvel Épisode");
+				String dateEpisode = JOptionPane.showInputDialog(
+						this,
+						"Date de l'épisode (aaaa/mm/jj) :",
+						"DateNonSpecifiee");
+				if (titreEpisode != null && !titreEpisode.isEmpty()) {
+					Episode nouvelEpisode = new Episode(titreEpisode, dateEpisode, null);
+					p.ajouterEpisode(nouvelEpisode);
+					this.dispose();
+					afficherBiographie(p, fullAccess);
+				}
+			});
+			panel.add(btnAjouterEpisode);
+		}
+
+		JScrollPane scrollPane = new JScrollPane(panel);
+		this.add(scrollPane, BorderLayout.CENTER);
+		this.setSize(600, 400);
+		this.setVisible(true);
 	}
 }

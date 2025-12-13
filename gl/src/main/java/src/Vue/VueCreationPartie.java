@@ -48,7 +48,7 @@ public class VueCreationPartie extends VueAbstraite {
 
 		panel.add(new JLabel("Lieu :"));
 		panel.add(champLieu);
-		panel.add(new JLabel("Date (jj/mm/aaaa) :"));
+		panel.add(new JLabel("Date (aaaa/mm/jj) :"));
 		panel.add(champDate);
 
 		panel.add(btnValider);

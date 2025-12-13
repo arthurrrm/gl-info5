@@ -11,6 +11,7 @@ import src.Vue.VueTableauDeBord;
 import src.Vue.VueCreationPersonnage;
 import src.Vue.VueDemandesMJ;
 import src.Vue.VuePartie;
+import src.Vue.VueConsultationBiographie;
 
 import java.util.List;
 import java.util.Map;
@@ -100,14 +101,21 @@ public class AppControleur {
 		return utilisateurs;
 	}
 
-	    public void afficherDemandesMJ() {
-        VueDemandesMJ vue = new VueDemandesMJ();
-        vue.setControleurs(this, personnageCtrl);
-        // On charge les demandes pour l'utilisateur actuellement connecté
-        List<Personnage> demandes = modele.getDemandesEnAttente(utilisateurConnecte);
-        vue.setDemandes(demandes);
-        changerVue(vue);
-    }
+	public void afficherDemandesMJ() {
+		VueDemandesMJ vue = new VueDemandesMJ();
+		vue.setControleurs(this, personnageCtrl);
+		// On charge les demandes pour l'utilisateur actuellement connecté
+		List<Personnage> demandes = modele.getDemandesEnAttente(utilisateurConnecte);
+		vue.setDemandes(demandes);
+		changerVue(vue);
+	}
+
+	public void afficherBiographiePersonnage(Personnage personnage, boolean fullAccess) {
+		VueConsultationBiographie vue = new VueConsultationBiographie(this);
+		vue.afficherBiographie(personnage, fullAccess);
+		vue.afficher();
+
+	}
 
 	public List<Partie> getPartiesUtilisateur() {
 		return modele.getPartiesDisponibles();

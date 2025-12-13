@@ -32,7 +32,7 @@ public class Personnage {
 		// Créer la biographie et le premier épisode "initial"
 		this.biographie = new Biographie();
 		if (biographieInitiale != null && !biographieInitiale.isEmpty()) {
-			Episode episodeInitial = new Episode("Biographie initiale");
+			Episode episodeInitial = new Episode("Biographie initiale", this.dateNaissance, null);
 			episodeInitial.ajouterParagraphe(new Paragraphe(biographieInitiale, false));
 			episodeInitial.setStatut(StatusEpisode.VALIDE); // La bio initiale est définitive
 			this.biographie.ajouterEpisode(episodeInitial);
