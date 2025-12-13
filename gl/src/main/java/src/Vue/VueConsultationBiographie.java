@@ -8,6 +8,8 @@ import src.Model.Paragraphe;
 import src.App;
 import src.Controlleur.AppControleur;
 import src.Model.Episode;
+
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -27,13 +29,36 @@ public class VueConsultationBiographie extends VueAbstraite {
 		this.setTitle("Biographie de " + p.getNom());
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setAutoscrolls(true);
 		List<Episode> episodes = p.getBiographie().getEpisodesChronologiques();
+		int numEpisode = 1;
 		for (int i = 0; i < episodes.size(); i++) {
+			if (episodes.get(i).getStatut() == StatusEpisode.BROUILLON && !fullAccess) {
+				continue;
+			}
+			boolean episodeVisible = fullAccess;
+			Iterator<Paragraphe> itPara = episodes.get(i).getContenu().iterator();
+			while (itPara.hasNext() && !episodeVisible) {
+				Paragraphe para = itPara.next();
+				if (!para.isEstSecret()) {
+					episodeVisible = true;
+				}
+			}
+			if (!episodeVisible) {
+				continue;
+			}
+
 			JPanel episodePanel = new JPanel();
 			episodePanel.setLayout(new BoxLayout(episodePanel, BoxLayout.Y_AXIS));
-			episodePanel.setBorder(BorderFactory.createTitledBorder("Épisode " + (i + 1) + ": "
-					+ episodes.get(i).getTitre()));
+			episodePanel.setBorder(BorderFactory.createTitledBorder("Épisode " + (numEpisode++) + ": "
+					+ episodes.get(i).getTitre() + " (" + episodes.get(i).getDateCreation() + ") - Statut: "
+					+ episodes.get(i).getStatut()));
 			for (Paragraphe para : episodes.get(i).getContenu()) {
+				JLabel labelPara = new JLabel(para.isEstSecret() ? "[Paragraphe secret]" : "Paragraphe:");
+				JPanel episodeParaPanel = new JPanel(new BorderLayout());
+				episodeParaPanel.add(labelPara, BorderLayout.WEST);
+				episodeParaPanel.setMaximumSize(labelPara.getPreferredSize());
+				episodePanel.add(episodeParaPanel);
 				if (!para.isEstSecret() || fullAccess) {
 					JTextArea textePara = new JTextArea(para.getTexte());
 					textePara.setLineWrap(true);
@@ -57,7 +82,7 @@ public class VueConsultationBiographie extends VueAbstraite {
 					}
 				}
 			}
-			if (fullAccess) {
+			if (fullAccess && episodes.get(i).getStatut() == StatusEpisode.BROUILLON) {
 				final int ifinal = i;
 				JButton btnAjouterParagraphe = new JButton("Ajouter un paragraphe");
 				btnAjouterParagraphe.addActionListener(e -> {
@@ -73,10 +98,21 @@ public class VueConsultationBiographie extends VueAbstraite {
 						Paragraphe nouveauPara = new Paragraphe(textePara, estSecret.equalsIgnoreCase("oui"));
 						episodes.get(ifinal).ajouterParagraphe(nouveauPara);
 						this.dispose();
-						afficherBiographie(p, fullAccess);
+						VueConsultationBiographie nouvelleVue = new VueConsultationBiographie(controleur);
+						nouvelleVue.afficherBiographie(p, fullAccess);
 					}
 				});
 				episodePanel.add(btnAjouterParagraphe);
+
+				JButton btnPublierEpisode = new JButton("Publier l'épisode");
+				btnPublierEpisode.addActionListener(e -> {
+					episodes.get(ifinal).setStatut(StatusEpisode.VALIDE);
+					this.dispose();
+					VueConsultationBiographie nouvelleVue = new VueConsultationBiographie(controleur);
+					nouvelleVue.afficherBiographie(p, fullAccess);
+				});
+				episodePanel.add(btnPublierEpisode);
+
 			}
 			panel.add(episodePanel);
 		}
@@ -95,7 +131,8 @@ public class VueConsultationBiographie extends VueAbstraite {
 					Episode nouvelEpisode = new Episode(titreEpisode, dateEpisode, null);
 					p.ajouterEpisode(nouvelEpisode);
 					this.dispose();
-					afficherBiographie(p, fullAccess);
+					VueConsultationBiographie nouvelleVue = new VueConsultationBiographie(controleur);
+					nouvelleVue.afficherBiographie(p, fullAccess);
 				}
 			});
 			panel.add(btnAjouterEpisode);
