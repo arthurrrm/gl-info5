@@ -19,6 +19,8 @@ public class VueTableauDeBord extends VueAbstraite {
 	private JButton btnProposerPartie = new JButton("Proposer partie");
 	private JButton btnGererDemandes = new JButton("Gérer les demandes MJ");
 	private JButton btnVoirBiographie = new JButton("Voir biographie");
+	private JButton btnDemanderTransfert = new JButton("Demander transfert");
+	private JButton btnVoirDemandesTransfert = new JButton("Demandes transfert");
 	private JList<Personnage> listePersonnages = new JList<Personnage>();
 	private AppControleur controleur;
 	private ArrayList<JButton> boutonsPartie = new ArrayList<JButton>();
@@ -52,9 +54,13 @@ public class VueTableauDeBord extends VueAbstraite {
 						btnChangerMJ.setEnabled(true);
 					}
 					btnVoirBiographie.setEnabled(true);
+					// Le transfert doit être possible uniquement pour les personnages
+					// dont l'utilisateur connecté est le propriétaire
+					btnDemanderTransfert.setEnabled(selection.getProprietaire() == controleur.getUtilisateurConnecte() && selection.getStatut() == StatusPersonnage.ACTIF);
 				} else {
 					btnChangerMJ.setEnabled(false);
 					btnVoirBiographie.setEnabled(false);
+					btnDemanderTransfert.setEnabled(false);
 				}
 
 			}
@@ -64,6 +70,7 @@ public class VueTableauDeBord extends VueAbstraite {
 		actions.add(btnProposerPartie);
 		btnProposerPartie.addActionListener(e -> controleur.afficherPropositionPartie());
 		actions.add(btnGererDemandes);
+		actions.add(btnVoirDemandesTransfert);
 
 		btnChangerMJ.addActionListener(e -> {
 			Personnage selection = listePersonnages.getSelectedValue();
@@ -83,6 +90,7 @@ public class VueTableauDeBord extends VueAbstraite {
 		JPanel panelActionSud = new JPanel();
 		panelSud.setLayout(new BoxLayout(panelSud, BoxLayout.Y_AXIS));
 		btnGererDemandes.addActionListener(e -> controleur.afficherDemandesMJ());
+		btnVoirDemandesTransfert.addActionListener(e -> controleur.afficherDemandesTransfert());
 		btnVoirBiographie.addActionListener(e -> {
 			Personnage selection = listePersonnages.getSelectedValue();
 			if (selection != null) {
@@ -94,8 +102,19 @@ public class VueTableauDeBord extends VueAbstraite {
 		});
 		btnVoirBiographie.setEnabled(false);
 		btnChangerMJ.setEnabled(false);
+		btnDemanderTransfert.setEnabled(false);
 		panelActionSud.add(btnChangerMJ);
 		panelActionSud.add(btnVoirBiographie);
+		panelActionSud.add(btnDemanderTransfert);
+		btnDemanderTransfert.addActionListener(e -> {
+			Personnage selection = listePersonnages.getSelectedValue();
+			if (selection != null) {
+				controleur.lancerDemandeTransfert(selection);
+			} else {
+				JOptionPane.showMessageDialog(this, "Veuillez sélectionner un personnage.", "Aucune sélection",
+						JOptionPane.WARNING_MESSAGE);
+			}
+		});
 		panelSud.add(panelActionSud);
 		panelSud.add(new JScrollPane(listePersonnages));
 		panel.add(panelSud, BorderLayout.SOUTH);

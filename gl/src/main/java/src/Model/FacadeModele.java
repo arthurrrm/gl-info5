@@ -232,4 +232,36 @@ public class FacadeModele {
 				.filter(p -> p.getProprietaire().equals(utilisateurConnecte))
 				.collect(Collectors.toList());
 	}
+
+	// Transfert de propriétaire
+	public void demanderTransfertProprietaire(Personnage personnage, Utilisateur nouveauProprietaire) {
+		if (personnage.getStatut() == StatusPersonnage.ACTIF) {
+			personnage.setProprietairePropose(nouveauProprietaire);
+			personnage.setStatut(StatusPersonnage.EN_ATTENTE_TRANSFERT);
+			System.out.println("Demande de transfert de propriétaire pour '" + personnage.getNom() + "' vers '"
+					+ nouveauProprietaire.getNom() + "'");
+		}
+	}
+
+	public void accepterTransfertProprietaire(Personnage personnage) {
+		if (personnage.getProprietairePropose() != null && personnage.getStatut() == StatusPersonnage.EN_ATTENTE_TRANSFERT) {
+			personnage.setProprietaire(personnage.getProprietairePropose());
+			personnage.setProprietairePropose(null);
+			personnage.setStatut(StatusPersonnage.ACTIF);
+		}
+	}
+
+	public void refuserTransfertProprietaire(Personnage personnage) {
+		if (personnage.getStatut() == StatusPersonnage.EN_ATTENTE_TRANSFERT) {
+			personnage.setProprietairePropose(null);
+			personnage.setStatut(StatusPersonnage.ACTIF);
+		}
+	}
+
+	public List<Personnage> getDemandesTransfertEnAttente(Utilisateur cible) {
+		return gestionnairePersonnages.getPersonnages().stream()
+				.filter(p -> p.getProprietairePropose() != null && p.getProprietairePropose().equals(cible)
+						&& p.getStatut() == StatusPersonnage.EN_ATTENTE_TRANSFERT)
+				.collect(Collectors.toList());
+	}
 }

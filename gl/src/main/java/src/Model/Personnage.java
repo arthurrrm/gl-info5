@@ -15,6 +15,7 @@ public class Personnage {
 	private Utilisateur proprietaire;
 	private Utilisateur mj;
 	private Utilisateur mjPropose;
+	private Utilisateur proprietairePropose;
 	private StatusPersonnage statut;
 
 	public Personnage(String nom, String dateNaissance, String profession, Univers univers, String biographieInitiale,
@@ -92,6 +93,14 @@ public class Personnage {
 		this.proprietaire = proprietaire;
 	}
 
+	public Utilisateur getProprietairePropose() {
+		return proprietairePropose;
+	}
+
+	public void setProprietairePropose(Utilisateur proprietairePropose) {
+		this.proprietairePropose = proprietairePropose;
+	}
+
 	public Utilisateur getMj() {
 		return mj;
 	}
@@ -123,8 +132,10 @@ public class Personnage {
 			infoStatut = " [Nouvelle proposition]";
 		} else if (statut == StatusPersonnage.EN_ATTENTE_CHANGEMENT_MJ) {
 			infoStatut = " [Demande de transfert]";
+		} else if (statut == StatusPersonnage.EN_ATTENTE_TRANSFERT) {
+			infoStatut = " [Demande de transfert de propriétaire]";
 		}
-		return nom + " (" + univers.getNom() + ")" + infoStatut + " Mj: "
-				+ (mj != null ? mj.getNom() : "Aucun");
+		return "Proprietaire: " + proprietaire.getNom()+ " | Nom: " + nom + " (vis dans " + univers.getNom() + ")" + " | Mj: "
+				+ (mj != null ? mj.getNom() : "Aucun") + " " + infoStatut;
 	}
 }

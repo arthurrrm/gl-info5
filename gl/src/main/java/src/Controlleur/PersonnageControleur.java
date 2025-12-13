@@ -77,5 +77,23 @@ public class PersonnageControleur {
 		}
 	}
 
+	public void traiterDemandeTransfert(Personnage personnage, String nouveauProprietaireNom) {
+		Utilisateur nouveauProprietaire = modele.getUtilisateurParNom(nouveauProprietaireNom);
+		if (nouveauProprietaire != null) {
+			modele.demanderTransfertProprietaire(personnage, nouveauProprietaire);
+			appControleur.afficherTableauDeBord();
+		}
+	}
+
+	public void traiterAcceptationTransfert(Personnage personnage) {
+		modele.accepterTransfertProprietaire(personnage);
+		appControleur.afficherDemandesTransfert();
+	}
+
+	public void traiterRefusTransfert(Personnage personnage) {
+		modele.refuserTransfertProprietaire(personnage);
+		appControleur.afficherDemandesTransfert();
+	}
+
 	
 }
