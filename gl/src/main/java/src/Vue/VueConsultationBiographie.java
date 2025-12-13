@@ -51,8 +51,14 @@ public class VueConsultationBiographie extends VueAbstraite {
 			JPanel episodePanel = new JPanel();
 			episodePanel.setLayout(new BoxLayout(episodePanel, BoxLayout.Y_AXIS));
 			episodePanel.setBorder(BorderFactory.createTitledBorder("Épisode " + (numEpisode++) + ": "
-					+ episodes.get(i).getTitre()));
+					+ episodes.get(i).getTitre() + " (" + episodes.get(i).getDateCreation() + ") - Statut: "
+					+ episodes.get(i).getStatut()));
 			for (Paragraphe para : episodes.get(i).getContenu()) {
+				JLabel labelPara = new JLabel(para.isEstSecret() ? "[Paragraphe secret]" : "Paragraphe:");
+				JPanel episodeParaPanel = new JPanel(new BorderLayout());
+				episodeParaPanel.add(labelPara, BorderLayout.WEST);
+				episodeParaPanel.setMaximumSize(labelPara.getPreferredSize());
+				episodePanel.add(episodeParaPanel);
 				if (!para.isEstSecret() || fullAccess) {
 					JTextArea textePara = new JTextArea(para.getTexte());
 					textePara.setLineWrap(true);
