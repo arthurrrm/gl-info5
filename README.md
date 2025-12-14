@@ -14,7 +14,7 @@ correspondant aà un cahier des charges donné.
 
 ```bash
 cd gl
-mvn clean compile exec:java -Dexec.mainClass="src.App"
+mvn clean compile exec:java
 ```
 
 ## Lancer le programme avec l'IDE
