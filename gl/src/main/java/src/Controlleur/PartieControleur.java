@@ -17,7 +17,6 @@ public class PartieControleur {
 	}
 
 	public void traiterPropositionPartie(Map<String, String> donnees, src.Model.Utilisateur utilisateurConnecte) {
-		// Extraction minimale (titre, univers...) - squelette
 		String titre = donnees.get("titre");
 		String universNom = donnees.get("univers");
 		Univers univers = modele.getUnivers(universNom);

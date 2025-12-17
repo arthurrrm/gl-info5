@@ -14,7 +14,7 @@ import src.Controlleur.PersonnageControleur;
  */
 public class VueCreationPersonnage extends VueAbstraite {
 
-	private AppControleur appControleur; // Nécessaire pour annuler et pour les données (univers)
+	private AppControleur appControleur;
 	private PersonnageControleur personnageControleur;
 
 	// Champs du formulaire
@@ -38,8 +38,8 @@ public class VueCreationPersonnage extends VueAbstraite {
 	private void initUI() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(5, 5, 5, 5); // Marge entre les composants
-		gbc.anchor = GridBagConstraints.WEST; // Aligner à gauche
+		gbc.insets = new Insets(5, 5, 5, 5);
+		gbc.anchor = GridBagConstraints.WEST;
 
 		// Ligne Nom
 		gbc.gridx = 0;
@@ -79,10 +79,10 @@ public class VueCreationPersonnage extends VueAbstraite {
 		// Ligne Biographie Initiale
 		gbc.gridx = 0;
 		gbc.gridy = 5;
-		gbc.anchor = GridBagConstraints.NORTHWEST; // Aligner en haut à gauche pour le label du JTextArea
+		gbc.anchor = GridBagConstraints.NORTHWEST;
 		panel.add(new JLabel("Biographie Initiale :"), gbc);
 		gbc.gridx = 1;
-		gbc.fill = GridBagConstraints.BOTH; // Remplir l'espace disponible
+		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		panel.add(new JScrollPane(areaBioInitiale), gbc);
@@ -93,7 +93,7 @@ public class VueCreationPersonnage extends VueAbstraite {
 		panelBoutons.add(btnValider);
 		gbc.gridx = 0;
 		gbc.gridy = 6;
-		gbc.gridwidth = 2; // S'étend sur 2 colonnes
+		gbc.gridwidth = 2;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		panel.add(panelBoutons, gbc);
 
@@ -107,8 +107,8 @@ public class VueCreationPersonnage extends VueAbstraite {
 		});
 
 		setContentPane(panel);
-		pack(); // Ajuste la taille de la fenêtre au contenu
-		setLocationRelativeTo(null); // Centre la fenêtre
+		pack();
+		setLocationRelativeTo(null);
 	}
 
 	public Map<String, String> getDonneesFormulaire() {
@@ -126,7 +126,6 @@ public class VueCreationPersonnage extends VueAbstraite {
 		this.appControleur = appCtrl;
 		this.personnageControleur = persoCtrl;
 
-		// Remplir le ComboBox des univers
 		List<String> universDisponibles = appCtrl.getUniversDisponibles();
 		comboUnivers.setModel(new DefaultComboBoxModel<>(universDisponibles.toArray(new String[0])));
 

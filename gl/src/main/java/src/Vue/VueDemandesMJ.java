@@ -38,7 +38,6 @@ public class VueDemandesMJ extends VueAbstraite {
         add(new JScrollPane(listeDemandes), BorderLayout.CENTER);
         add(panelBoutons, BorderLayout.EAST);
 
-        // Listeners
         btnRetour.addActionListener(e -> appControleur.afficherTableauDeBord());
 
         btnAccepter.addActionListener(e -> {
@@ -60,7 +59,7 @@ public class VueDemandesMJ extends VueAbstraite {
             }
         });
 
-        // Le bouton consulter est un bonus pour voir les détails avant de décider
+        // Le bouton sert à voir les détails avant de décider
         btnConsulter.addActionListener(e -> {
             Personnage selection = listeDemandes.getSelectedValue();
             if (selection != null) {

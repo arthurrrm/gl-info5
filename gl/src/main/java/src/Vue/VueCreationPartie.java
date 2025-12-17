@@ -63,7 +63,6 @@ public class VueCreationPartie extends VueAbstraite {
 					appControleur.addUnivers(nomUnivers.trim());
 					univers = nomUnivers.trim();
 				} else {
-					// Annuler la création de la partie si le nom de l'univers est invalide
 					JOptionPane.showMessageDialog(this, "Le nom de l'univers ne peut pas être vide.", "Erreur",
 							JOptionPane.ERROR_MESSAGE);
 					return;

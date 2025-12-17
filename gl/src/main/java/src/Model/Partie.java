@@ -41,7 +41,6 @@ public class Partie {
 		}
 	}
 
-	// Getters / Setters
 	public String getTitre() {
 		return titre;
 	}

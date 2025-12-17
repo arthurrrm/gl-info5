@@ -53,7 +53,6 @@ public class VuePartie extends VueAbstraite {
 				partie.setStatut(StatusPartie.EN_COURS);
 				JOptionPane.showMessageDialog(null,
 						"La partie a été démarrée.");
-				// Refresh the view
 				this.dispose();
 				controleur.afficherPartie(partie);
 			});
@@ -67,7 +66,6 @@ public class VuePartie extends VueAbstraite {
 					partie.finaliser(resume);
 					JOptionPane.showMessageDialog(null,
 							"La partie a été clôturée.");
-					// Refresh the view
 					this.dispose();
 					controleur.afficherPartie(partie);
 				} else {
@@ -98,7 +96,6 @@ public class VuePartie extends VueAbstraite {
 				}
 			}
 			if (persosNonParticipants.size() > 0) {
-				// Code to display a dialog for selecting a participant
 				String[] options = persosNonParticipants.stream()
 						.map(Personnage::getNom)
 						.toArray(String[]::new);

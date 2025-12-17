@@ -139,7 +139,6 @@ public class AppControleur {
 	}
 
 	public List<Personnage> getPersonnagesUtilisateur() {
-		// Renvoie tous les personnages, actifs ou en attente, pour l'affichage
 		return modele.getPersonnagesUttilisateur(utilisateurConnecte);
 	}
 
@@ -196,9 +195,6 @@ public class AppControleur {
 		}
 	}
 
-	/**
-	 * Gère la déconnexion de l'utilisateur.
-	 */
 	public void deconnecter() {
 		System.out.println("Déconnexion de l'utilisateur : "
 				+ (utilisateurConnecte != null ? utilisateurConnecte.getNom() : "aucun"));

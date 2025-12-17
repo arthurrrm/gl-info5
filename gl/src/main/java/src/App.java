@@ -9,7 +9,7 @@ import src.Model.FacadeModele;
 public class App {
     public static void main(String[] args) {
         FacadeModele modele = new FacadeModele();
-        // Charger des données de démonstration depuis src/main/resources/demo
+        // les donnéesz de démo sont chargées depuis src/main/resources/demo
         modele.initDemo();
         AppControleur appControleur = new AppControleur(modele);
         appControleur.demarrerApplication();

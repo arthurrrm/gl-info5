@@ -14,15 +14,13 @@ import javax.swing.JOptionPane;
  */
 public class PersonnageControleur {
 	private final FacadeModele modele;
-	private final AppControleur appControleur; // Référence au contrôleur principal
+	private final AppControleur appControleur;
 
-	// Constructeur mis à jour
 	public PersonnageControleur(FacadeModele modele, AppControleur appControleur) {
 		this.modele = modele;
 		this.appControleur = appControleur;
 	}
 
-   // Méthode mise à jour pour accepter les données complètes et le propriétaire
     public void traiterCreationPersonnage(Map<String, String> donnees, Utilisateur proprietaire) {
         String nom = donnees.get("nom");
         String dateNaissance = donnees.get("dateNaissance");
@@ -32,7 +30,6 @@ public class PersonnageControleur {
 		String mjProposeNom = donnees.get("mjPropose");
         
 		
-        // Validation simple (peut être enrichie)
         if (nom == null || nom.trim().isEmpty() || universNom == null) {
 			JOptionPane.showMessageDialog(null, "Le nom et l'univers sont obligatoires.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
@@ -64,7 +61,7 @@ public class PersonnageControleur {
 		if (personnage.getStatut() == StatusPersonnage.EN_ATTENTE_MJ) {
 			modele.refuserPersonnage(personnage); // Supprime le personnage
 		} else if (personnage.getStatut() == StatusPersonnage.EN_ATTENTE_CHANGEMENT_MJ) {
-			modele.refuserChangementMJ(personnage); // Annule juste la demande
+			modele.refuserChangementMJ(personnage);
 		}
 		appControleur.afficherDemandesMJ(); // Rafraîchir la vue des demandes
 	}

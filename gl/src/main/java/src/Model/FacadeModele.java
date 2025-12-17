@@ -148,7 +148,6 @@ public class FacadeModele {
 	}
 
 	public List<Personnage> getPersonnagesUtilisateur(Utilisateur user, Boolean mj) {
-		// Filtrage simple sur propriétaire
 		List<Personnage> result = new ArrayList<Personnage>();
 		for (Personnage p : gestionnairePersonnages.getPersonnages()) {
 			if (p.getProprietaire().equals(user) || (mj && p.getMj() != null && p.getMj().equals(user))) {
@@ -181,7 +180,7 @@ public class FacadeModele {
 
 	public void accepterPersonnage(Personnage personnage) {
 		personnage.setStatut(StatusPersonnage.ACTIF);
-		personnage.setMj(personnage.getMjPropose()); // Le MJ proposé devient le MJ officiel
+		personnage.setMj(personnage.getMjPropose());
 		personnage.setMjPropose(null);
 	}
 
@@ -189,14 +188,12 @@ public class FacadeModele {
 		gestionnairePersonnages.getPersonnages().remove(personnage);
 	}
 
-	// Récupérer les personnages actifs d'un utilisateur
 	public List<Personnage> getPersonnagesActifs(Utilisateur utilisateur) {
 		return gestionnairePersonnages.getPersonnages().stream()
 				.filter(p -> p.getProprietaire().equals(utilisateur) && p.getStatut() == StatusPersonnage.ACTIF)
 				.collect(Collectors.toList());
 	}
 
-	// NOUVEAU: Le joueur initie la demande de changement
 	public void demanderChangementMJ(Personnage personnage, Utilisateur nouveauMJ) {
 		if (personnage.getStatut() == StatusPersonnage.ACTIF) {
 			personnage.setMjPropose(nouveauMJ);
@@ -206,16 +203,15 @@ public class FacadeModele {
 		}
 	}
 
-	// NOUVEAU: Le nouveau MJ accepte la prise en charge
 	public void accepterChangementMJ(Personnage personnage) {
-		personnage.setMj(personnage.getMjPropose()); // Le nouveau MJ est assigné
+		personnage.setMj(personnage.getMjPropose());
 		personnage.setMjPropose(null);
-		personnage.setStatut(StatusPersonnage.ACTIF); // Retour au statut normal
+		personnage.setStatut(StatusPersonnage.ACTIF);
 	}
 
 	// NOUVEAU: Le nouveau MJ refuse la prise en charge
 	public void refuserChangementMJ(Personnage personnage) {
-		personnage.setMjPropose(null); // Annulation de la proposition
+		personnage.setMjPropose(null);
 		personnage.setStatut(StatusPersonnage.ACTIF); // Retour au statut normal avec l'ancien MJ
 	}
 

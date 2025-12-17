@@ -14,10 +14,6 @@ public class GestionnairePersonnages {
 		System.out.println("Personnage ajouté : " + perso.getNom() + " dans l'univers " + perso.getUnivers().getNom());
 	}
 
-	public void validerEpisode(Episode episode, Utilisateur user) {
-		// Validation future
-	}
-
 	public void changerMJ(Personnage perso, Utilisateur nouveauMJ) {
 		perso.setMj(nouveauMJ);
 	}
